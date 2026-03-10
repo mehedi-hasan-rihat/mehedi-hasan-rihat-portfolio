@@ -31,7 +31,7 @@ function Site() {
         <Skills />
         <Projects />
         <Experience />
-        <Activity />
+        {/* <Activity /> */}
         <Blogs />
         <Connect />
       </main>

@@ -35,3 +35,7 @@ body {
 ::selection {
   background: rgba(255, 255, 255, 0.18);
 }
+
+.bg-my_img {
+  background-image: url("https://i.ibb.co.com/G0msT4B/ok.png");
+}

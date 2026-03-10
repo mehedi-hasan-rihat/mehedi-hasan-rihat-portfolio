@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { site } from "@/lib/site";
 import { IconArrowRight } from "../icons";
 import { SectionHeading } from "./SectionHeading";
@@ -16,14 +15,18 @@ export function About() {
           <div className="lg:col-span-4 flex justify-center lg:justify-start">
             <div className="relative group w-full max-w-[320px]">
               <div className="absolute -top-3 -left-3 w-16 h-16 border-t-2 border-l-2 border-white/10 -z-10 group-hover:-translate-x-1 group-hover:-translate-y-1 transition-transform" />
-              <div className="relative aspect-[4/5] rounded-xl overflow-hidden shadow-sm border border-white/10 bg-zinc-950">
-                <Image
-                  alt={site.name}
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                  src="/assets/avatar.svg"
-                  width={640}
-                  height={800}
-                  priority
+              <div className="relative rounded-xl overflow-hidden shadow-sm border border-white/10 bg-zinc-950">
+                <div
+                  aria-label={`${site.name} photo`}
+                  role="img"
+                  className={[
+                    "w-[calc(250px+8vw)] h-[calc(200px+7vw)]",
+                    "bg-my_img my_img bg-center bg-cover bg-no-repeat",
+                    "filter grayscale-[80%]",
+                    "border border-white/10",
+                    "transition-[filter,border-color,transform] duration-700 ease-out",
+                    "group-hover:grayscale-[70%] group-hover:border-white/40 group-hover:scale-[1.02]",
+                  ].join(" ")}
                 />
                 <div className="absolute top-4 left-4">
                   <div className="flex items-center gap-1.5 px-2.5 py-1 bg-black/60 backdrop-blur-md rounded-md border border-white/10 shadow-sm">
@@ -111,4 +114,3 @@ export function About() {
     </section>
   );
 }
-
