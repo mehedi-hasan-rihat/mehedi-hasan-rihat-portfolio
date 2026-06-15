@@ -1,96 +1,237 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
 import { site } from "@/lib/site";
-import { IconArrowRight, IconDownload, IconExternal } from "../icons";
+import Image from "next/image";
 
 export function Hero() {
+  const heroRef = useRef<HTMLElement>(null);
+  const nameRef = useRef<HTMLDivElement>(null);
+  const roleRef = useRef<HTMLDivElement>(null);
+  const taglineRef = useRef<HTMLParagraphElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
+  const metaRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const decorRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        defaults: { ease: "expo.out" },
+        delay: 0.5,
+      });
+
+      // Availability badge
+      const metaItems = metaRef.current?.querySelectorAll(".meta-item") || [];
+      gsap.set(metaItems, { yPercent: 100 });
+      tl.to(metaItems, {
+        yPercent: 0,
+        stagger: 0.1,
+        duration: 1,
+        ease: "power3.out",
+      });
+
+      // Name words — slide up from below overflow clip
+      const nameWords = nameRef.current?.querySelectorAll(".hero-word") || [];
+      gsap.set(nameWords, { yPercent: 120 });
+      tl.to(
+        nameWords,
+        {
+          yPercent: 0,
+          stagger: 0.12,
+          duration: 1.6,
+          ease: "expo.out",
+        },
+        "-=0.6"
+      );
+
+      // Role wipes in
+      gsap.set(roleRef.current, { clipPath: "inset(0 100% 0 0)" });
+      tl.to(
+        roleRef.current,
+        { clipPath: "inset(0 0% 0 0)", duration: 1, ease: "power4.inOut" },
+        "-=1"
+      );
+
+      // Tagline
+      gsap.set(taglineRef.current, { yPercent: 20, clipPath: "inset(30% 0 0 0)" });
+      tl.to(
+        taglineRef.current,
+        { yPercent: 0, clipPath: "inset(0% 0 0 0)", duration: 1.2, ease: "power3.out" },
+        "-=0.6"
+      );
+
+      // CTA
+      gsap.set(ctaRef.current, { clipPath: "inset(0 0 100% 0)" });
+      tl.to(
+        ctaRef.current,
+        { clipPath: "inset(0 0 0% 0)", duration: 1, ease: "power3.out" },
+        "-=0.5"
+      );
+
+      // Profile image
+      if (imageRef.current) {
+        gsap.set(imageRef.current, { clipPath: "circle(0% at 50% 50%)", scale: 1.1 });
+        tl.to(
+          imageRef.current,
+          { clipPath: "circle(75% at 50% 50%)", scale: 1, duration: 1.4, ease: "power3.out" },
+          "-=0.8"
+        );
+      }
+
+      // Scroll indicator
+      gsap.set(scrollRef.current, { clipPath: "inset(100% 0 0 0)" });
+      tl.to(
+        scrollRef.current,
+        { clipPath: "inset(0% 0 0 0)", duration: 0.8, ease: "power3.out" },
+        "-=0.4"
+      );
+
+      // Decorative corner
+      if (decorRef.current) {
+        gsap.set(decorRef.current, { clipPath: "inset(0 0 100% 0)" });
+        tl.to(
+          decorRef.current,
+          { clipPath: "inset(0 0 0% 0)", duration: 0.8, ease: "power3.out" },
+          "-=0.6"
+        );
+      }
+    });
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="relative min-h-screen flex items-center bg-black overflow-hidden pt-20">
-      <div
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgb(255, 255, 255) 1px, transparent 1px), linear-gradient(90deg, rgb(255, 255, 255) 1px, transparent 1px)",
-          backgroundSize: "50px 50px",
-        }}
-      />
-      <div className="max-w-7xl mx-auto px-6 md:px-12 w-full relative z-10">
-        <div className="mb-10 transition-all duration-1000 opacity-100 translate-y-0">
-          <div className="inline-flex items-center gap-3 px-3 py-1 border border-white/10 rounded-full bg-white/5 backdrop-blur-sm">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
-            </span>
-            <p className="text-[10px] font-mono font-bold uppercase tracking-[0.15em] text-zinc-300">
-              Available for Projects
-            </p>
+    <section
+      ref={heroRef}
+      className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 pt-32 pb-32"
+    >
+      <div className="relative z-10 max-w-7xl w-full">
+        {/* Availability badge */}
+        <div ref={metaRef} className="mb-10">
+          <div className="overflow-hidden">
+            <div className="meta-item inline-flex items-center gap-3 border border-zinc-800 rounded-full px-4 py-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-xs text-zinc-400 uppercase tracking-wider font-medium">
+                {site.availability}
+              </span>
+            </div>
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-9">
-            <div className="space-y-2 mb-8 transition-all duration-1000 delay-300 opacity-100 translate-x-0">
-              <h1 className="text-6xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter leading-[0.85]">
-                {site.name.split(" ")[0]} <br />
-                <span className="text-zinc-400 hover:text-white transition-colors duration-500 cursor-default">
-                  {site.name.split(" ").slice(1).join(" ")}
-                </span>
-              </h1>
-            </div>
-
-            <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-12 transition-all duration-1000 delay-500 opacity-100 translate-y-0">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-[1px] bg-white" />
-                <h2 className="text-sm md:text-lg font-bold uppercase tracking-[0.3em] text-white">
-                  Full‑Stack <span className="text-zinc-400 font-light">Web</span>{" "}
-                  Developer
-                </h2>
-              </div>
-              <p className="text-zinc-400 text-sm md:text-base max-w-sm leading-relaxed border-l border-white/10 pl-6">
-                {site.tagline}
-              </p>
-            </div>
-
-            <div className="mt-12 flex flex-row flex-wrap gap-4 transition-all duration-1000 delay-700 opacity-100">
-              <a
-                href={`mailto:${site.email}`}
-                className="flex-1 md:flex-initial min-w-[180px] group relative px-8 py-4 bg-white text-black rounded-full overflow-hidden transition-all duration-300 hover:pr-10 text-center flex items-center justify-center"
-              >
-                <div className="relative z-10 flex items-center gap-2 text-xs font-black uppercase tracking-widest">
-                  Collaborate{" "}
-                  <IconArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        {/* Main content grid */}
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          {/* Left — Text content */}
+          <div className="lg:col-span-8">
+            {/* Name */}
+            <div ref={nameRef} className="mb-6">
+              {site.name.split(" ").map((word, i) => (
+                <div key={i} className="overflow-hidden">
+                  <h1 className="hero-word text-[clamp(3.5rem,11vw,10rem)] font-black uppercase leading-[0.88] tracking-[-0.04em] text-white will-change-transform">
+                    {word}
+                  </h1>
                 </div>
+              ))}
+            </div>
+
+            {/* Role */}
+            <div ref={roleRef} className="mb-8">
+              <h2 className="text-lg md:text-xl text-zinc-400 uppercase tracking-[0.25em] font-light">
+                {site.role}
+              </h2>
+            </div>
+
+            {/* Tagline */}
+            <p
+              ref={taglineRef}
+              className="max-w-xl text-lg md:text-xl text-zinc-500 leading-relaxed mb-12"
+            >
+              {site.tagline}
+            </p>
+
+            {/* CTA buttons */}
+            <div ref={ctaRef} className="flex flex-wrap items-center gap-5">
+              <a
+                href="#projects"
+                className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-black font-semibold text-sm uppercase tracking-wider hover:bg-zinc-200 transition-colors duration-300"
+              >
+                <span>View Work</span>
+                <svg
+                  className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
               </a>
               <a
-                href={site.resumePageHref}
-                className="flex-1 md:flex-initial min-w-[180px] flex items-center justify-center gap-2 px-8 py-4 bg-black border border-white text-white rounded-full text-xs font-black uppercase tracking-widest hover:bg-white/5 transition-all"
+                href="#connect"
+                className="inline-flex items-center gap-3 px-8 py-4 border border-zinc-700 text-white font-semibold text-sm uppercase tracking-wider hover:border-zinc-400 transition-colors duration-300"
               >
-                Resume <IconDownload className="w-4 h-4" />
+                Let&apos;s Talk
               </a>
             </div>
           </div>
 
-          <div className="hidden lg:col-span-3 lg:flex flex-col items-end gap-8">
-            {site.socials.map((s, idx) => (
-              <a
-                key={s.href}
-                href={s.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center gap-4 text-zinc-400 transition-all duration-500"
-                style={{ transitionDelay: `${800 + idx * 100}ms` }}
-              >
-                <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-white">
-                  {s.label}
-                </span>
-                <div className="p-3 rounded-full border border-transparent group-hover:border-white/10 group-hover:bg-white group-hover:text-black group-hover:rotate-[360deg] transition-all duration-500 ease-in-out">
-                  <IconExternal className="w-5 h-5" />
+          {/* Right — Profile image */}
+          <div className="lg:col-span-4 hidden lg:flex justify-end items-start">
+            <div
+              ref={imageRef}
+              className="relative w-64 h-80 overflow-hidden rounded-2xl group"
+            >
+              <Image
+                src={site.avatar}
+                alt={site.name}
+                fill
+                className="object-cover object-top scale-105 group-hover:scale-100 transition-transform duration-1000 ease-out"
+                priority
+              />
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/20 to-transparent opacity-60" />
+              {/* Role label */}
+              <div className="absolute bottom-5 left-5 right-5">
+                <div className="text-[10px] text-zinc-400 uppercase tracking-[0.2em] font-mono">
+                  {site.role}
                 </div>
-              </a>
-            ))}
-            <div className="h-24 w-[1px] bg-white/10 mr-[22px] mt-4" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Scroll indicator — bottom center */}
+      <div
+        ref={scrollRef}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+      >
+        <span className="text-[10px] text-zinc-500 uppercase tracking-[0.3em]">
+          Scroll
+        </span>
+        <div className="w-px h-12 bg-zinc-700" />
+        <svg
+          className="w-4 h-4 text-zinc-600 animate-bounce"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        </svg>
+      </div>
+
+      {/* Decorative corner */}
+      <div ref={decorRef} className="absolute top-32 right-6 md:right-16 lg:right-24 hidden lg:block">
+        <div className="text-right space-y-1">
+          <div className="text-[10px] text-zinc-600 uppercase tracking-wider font-mono">
+            Portfolio © {new Date().getFullYear()}
+          </div>
+          <div className="text-[10px] text-zinc-700 uppercase tracking-wider font-mono">
+            {site.location}
           </div>
         </div>
       </div>
     </section>
   );
 }
-

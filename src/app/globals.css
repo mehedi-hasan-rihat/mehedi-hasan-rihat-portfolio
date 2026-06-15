@@ -1,12 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --accent: #e4e4e7;
+  --muted: #71717a;
+  --border: #27272a;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
     Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", "Courier New", monospace;
+  --font-display: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
 
 @theme inline {
@@ -14,28 +18,233 @@
   --color-foreground: var(--foreground);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 html {
-  scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), system-ui, -apple-system, Segoe UI, Roboto,
-    Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
 }
 
-.bg-my_img {
-  background-image: url("https://i.ibb.co.com/G0msT4B/ok.png");
+/* ===== Initial load: prevent content flash before GSAP ===== */
+.hero-initial {
+  visibility: visible;
+}
+
+/* ===== Grain Overlay ===== */
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* ===== Infinite Marquee ===== */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-reverse {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0%); }
+}
+
+.marquee {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  gap: 2rem;
+}
+
+.marquee-content {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-around;
+  gap: 2rem;
+  min-width: 100%;
+  animation: marquee 30s linear infinite;
+}
+
+.marquee-reverse .marquee-content {
+  animation: marquee-reverse 30s linear infinite;
+}
+
+.marquee-fast .marquee-content {
+  animation-duration: 15s;
+}
+
+.marquee-slow .marquee-content {
+  animation-duration: 60s;
+}
+
+/* ===== Viewport Typography ===== */
+.text-viewport {
+  font-size: clamp(3rem, 15vw, 20rem);
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+}
+
+.text-viewport-sm {
+  font-size: clamp(2rem, 8vw, 10rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+
+/* ===== Hover line animation ===== */
+.hover-line {
+  position: relative;
+  display: inline-block;
+}
+
+.hover-line::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.hover-line:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ===== Custom scrollbar ===== */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* ===== Brutalist elements ===== */
+.brutalist-border {
+  border: 4px solid currentColor;
+  box-shadow: 8px 8px 0 0 currentColor;
+}
+
+.brutalist-border-sm {
+  border: 3px solid currentColor;
+  box-shadow: 6px 6px 0 0 currentColor;
+}
+
+/* ===== Fancy cursor ===== */
+.has-fancy-cursor body,
+.has-fancy-cursor a,
+.has-fancy-cursor button,
+.has-fancy-cursor [role="button"],
+.has-fancy-cursor input,
+.has-fancy-cursor textarea,
+.has-fancy-cursor select,
+.has-fancy-cursor summary,
+.has-fancy-cursor label {
+  cursor: none;
+}
+
+/* Dot — small, sharp, instant tracking */
+.cursor-dot {
+  position: fixed;
+  z-index: 2147483647;
+  pointer-events: none;
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  margin-top: -4px;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease, width 0.3s ease, height 0.3s ease, margin 0.3s ease;
+  mix-blend-mode: difference;
+}
+
+.cursor-dot.is-visible {
+  opacity: 1;
+}
+
+.cursor-dot.is-hover {
+  width: 0px;
+  height: 0px;
+  margin-left: 0px;
+  margin-top: 0px;
+}
+
+/* Ring — smooth trailing circle */
+.cursor-ring {
+  position: fixed;
+  z-index: 2147483646;
+  pointer-events: none;
+  width: 36px;
+  height: 36px;
+  margin-left: -18px;
+  margin-top: -18px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  opacity: 0;
+  transition: opacity 0.2s ease, width 0.4s cubic-bezier(0.25, 1, 0.5, 1), height 0.4s cubic-bezier(0.25, 1, 0.5, 1), margin 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease, background 0.3s ease;
+  mix-blend-mode: difference;
+}
+
+.cursor-ring.is-visible {
+  opacity: 1;
+}
+
+.cursor-ring.is-hover {
+  width: 64px;
+  height: 64px;
+  margin-left: -32px;
+  margin-top: -32px;
+  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.cursor-ring.is-press {
+  width: 28px;
+  height: 28px;
+  margin-left: -14px;
+  margin-top: -14px;
+  border-color: rgba(255, 255, 255, 0.9);
+}
+
+/* ===== Glow effects ===== */
+.glow-sm {
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.1), 0 0 30px rgba(56, 189, 248, 0.05);
+}
+
+.glow-text {
+  text-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
+}
+
+/* ===== Section divider ===== */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border) 20%, var(--border) 80%, transparent);
 }

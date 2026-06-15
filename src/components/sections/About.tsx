@@ -1,114 +1,153 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { site } from "@/lib/site";
-import { IconArrowRight } from "../icons";
-import { SectionHeading } from "./SectionHeading";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export function About() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const bioRef = useRef<HTMLDivElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Section heading — clip from bottom
+      gsap.set(headingRef.current, { clipPath: "inset(0 0 100% 0)" });
+      gsap.to(headingRef.current, {
+        clipPath: "inset(0 0 0% 0)",
+        duration: 1.4,
+        ease: "power4.inOut",
+        scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
+      });
+
+      // Bio paragraphs stagger
+      const paragraphs = bioRef.current?.querySelectorAll(".bio-line") || [];
+      gsap.set(paragraphs, { yPercent: 80, clipPath: "inset(0 0 50% 0)" });
+      gsap.to(paragraphs, {
+        yPercent: 0,
+        clipPath: "inset(0 0 0% 0)",
+        stagger: 0.15,
+        duration: 1.2,
+        ease: "power3.out",
+        scrollTrigger: { trigger: bioRef.current, start: "top 75%" },
+      });
+
+      // Stats reveal with counter-like feel
+      const statItems = statsRef.current?.querySelectorAll(".stat-card") || [];
+      gsap.set(statItems, { yPercent: 60, scale: 0.95, rotateX: -10 });
+      gsap.to(statItems, {
+        yPercent: 0,
+        scale: 1,
+        rotateX: 0,
+        stagger: 0.12,
+        duration: 1,
+        ease: "expo.out",
+        scrollTrigger: { trigger: statsRef.current, start: "top 80%" },
+      });
+
+      // Image reveal with diagonal clip
+      if (imageRef.current) {
+        gsap.set(imageRef.current, { clipPath: "polygon(0 0, 0 0, 0 100%, 0 100%)" });
+        gsap.to(imageRef.current, {
+          clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+          duration: 1.6,
+          ease: "power4.inOut",
+          scrollTrigger: { trigger: imageRef.current, start: "top 75%" },
+        });
+      }
+    });
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="about"
-      className="py-24 bg-black text-zinc-50 relative scroll-mt-28"
+      className="relative px-6 md:px-16 lg:px-24 py-32 md:py-40"
     >
-      <div className="max-w-6xl mx-auto px-6">
-        <SectionHeading kicker="Biography" title="What" emphasize="I Do" />
+      <div className="max-w-7xl mx-auto">
+        {/* Section label */}
+        <div className="mb-4">
+          <span className="text-[11px] text-zinc-600 uppercase tracking-[0.3em] font-mono">
+            01 / About
+          </span>
+        </div>
 
-        <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
-          <div className="lg:col-span-4 flex justify-center lg:justify-start">
-            <div className="relative group w-full max-w-[320px]">
-              <div className="absolute -top-3 -left-3 w-16 h-16 border-t-2 border-l-2 border-white/10 -z-10 group-hover:-translate-x-1 group-hover:-translate-y-1 transition-transform" />
-              <div className="relative rounded-xl overflow-hidden shadow-sm border border-white/10 bg-zinc-950">
-                <div
-                  aria-label={`${site.name} photo`}
-                  role="img"
-                  className={[
-                    "w-[calc(250px+8vw)] h-[calc(200px+7vw)]",
-                    "bg-my_img my_img bg-center bg-cover bg-no-repeat",
-                    "filter grayscale-[80%]",
-                    "border border-white/10",
-                    "transition-[filter,border-color,transform] duration-700 ease-out",
-                    "group-hover:grayscale-[70%] group-hover:border-white/40 group-hover:scale-[1.02]",
-                  ].join(" ")}
-                />
-                <div className="absolute top-4 left-4">
-                  <div className="flex items-center gap-1.5 px-2.5 py-1 bg-black/60 backdrop-blur-md rounded-md border border-white/10 shadow-sm">
-                    <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-                    <span className="text-[9px] font-black uppercase tracking-widest text-zinc-200">
-                      Active
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-4 flex items-center justify-between px-1">
-                <div className="h-[1px] flex-1 bg-white/10" />
-                <span className="text-[10px] font-mono text-zinc-300 px-3 uppercase tracking-[0.3em]">
-                  Profile v.26
-                </span>
-                <div className="h-[1px] flex-1 bg-white/10" />
-              </div>
+        <div className="grid lg:grid-cols-12 gap-16 lg:gap-12">
+          {/* Left — Heading + Bio */}
+          <div className="lg:col-span-7">
+            <div className="overflow-hidden mb-12">
+              <h2
+                ref={headingRef}
+                className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter text-white leading-[0.9]"
+              >
+                Building the
+                <br />
+                <span className="text-zinc-500">modern web</span>
+              </h2>
             </div>
-          </div>
 
-          <div className="lg:col-span-8">
-            <div className="inline-flex items-center gap-2 mb-6">
-              <div className="w-1 h-1 bg-white rounded-full" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-400">
-                The Full‑Stack Builder
-              </span>
-            </div>
-            <div className="space-y-5">
-              <h3 className="text-3xl font-bold text-white leading-tight tracking-tight max-w-2xl">
-                Building refined web products with a focus on{" "}
-                <span className="text-zinc-400">functional minimalism</span> and
-                scalable engineering.
-              </h3>
-              <p className="text-zinc-400 text-base leading-relaxed max-w-xl">
-                I bridge design and engineering: from clean UI systems to robust
-                APIs and data models. I care about performance, accessibility,
-                and maintainable code.
+            <div ref={bioRef} className="space-y-6 max-w-2xl">
+              <p className="bio-line text-xl md:text-2xl text-zinc-300 leading-relaxed font-light">
+                {site.bio}
+              </p>
+              <p className="bio-line text-base text-zinc-500 leading-relaxed">
+                Based in <span className="text-zinc-300">{site.location}</span> — available for
+                freelance, contract, and full-time roles worldwide.
               </p>
             </div>
+          </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10 py-8 border-y border-white/10">
-              <div className="space-y-1">
-                <p className="text-[9px] uppercase tracking-[0.2em] text-zinc-400 font-black">
-                  Location
-                </p>
-                <p className="text-[13px] font-bold text-zinc-100">
+          {/* Right — Profile Image */}
+          <div className="lg:col-span-5 flex items-center">
+            <div ref={imageRef} className="relative w-full aspect-[4/5] bg-zinc-900 overflow-hidden group">
+              <img
+                src={site.avatar}
+                alt={site.name}
+                className="w-full h-full object-cover object-top grayscale-[30%] group-hover:grayscale-0 transition-all duration-1000"
+              />
+              {/* Subtle overlay gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/60 via-transparent to-transparent" />
+              {/* Border frame */}
+              <div className="absolute inset-0 border border-zinc-700/40 group-hover:border-zinc-500/60 transition-colors duration-700" />
+              {/* Corner accent */}
+              <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+                <span className="text-[10px] text-zinc-500 uppercase tracking-wider font-mono">
                   {site.location}
-                </p>
-              </div>
-              <div className="space-y-1">
-                <p className="text-[9px] uppercase tracking-[0.2em] text-zinc-400 font-black">
-                  Status
-                </p>
-                <p className="text-[13px] font-bold text-zinc-100">
-                  Open to Work
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-10 flex flex-wrap items-center justify-between gap-6">
-              <div className="flex flex-wrap gap-1.5">
-                {site.skills.slice(0, 6).map((s) => (
-                  <span
-                    key={s}
-                    className="text-[10px] font-bold px-3 py-1 bg-white/5 text-zinc-200 rounded border border-white/10 uppercase"
-                  >
-                    {s}
-                  </span>
-                ))}
-                <span className="text-[10px] font-bold px-3 py-1 bg-white/5 text-zinc-200 rounded border border-white/10 uppercase">
-                  +{site.skills.length - 6} More
+                </span>
+                <span className="text-[10px] text-zinc-600 font-mono">
+                  {site.initials}
                 </span>
               </div>
-              <a
-                href="#connect"
-                className="group flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-white border-b-2 border-white pb-1 hover:text-zinc-300 hover:border-white/40 transition-all"
-              >
-                Get In Touch{" "}
-                <IconArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-              </a>
             </div>
           </div>
+        </div>
+
+        {/* Stats */}
+        <div
+          ref={statsRef}
+          className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-24"
+          style={{ perspective: "800px" }}
+        >
+          {Object.entries(site.stats).map(([key, value]) => (
+            <div
+              key={key}
+              className="stat-card p-8 border border-zinc-800/60 bg-zinc-900/30 backdrop-blur-sm hover:border-zinc-600 transition-colors duration-500 group"
+            >
+              <div className="text-4xl md:text-5xl font-black text-white mb-3 group-hover:scale-105 transition-transform duration-500 origin-left">
+                {value}
+              </div>
+              <div className="text-xs text-zinc-500 uppercase tracking-wider font-medium">
+                {key}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

@@ -1,10 +1,20 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { FancyCursor } from "@/components/FancyCursor";
+import { ShaderBackground } from "@/components/ShaderBackground";
+import { SmoothScroll } from "@/components/SmoothScroll";
 
 export const metadata: Metadata = {
-  title: "Mehedi Hasan Rihat — Full‑Stack Web Developer",
+  title: "Mehedi Hasan Rihat — Software Developer",
   description:
-    "Portfolio of Mehedi Hasan Rihat — React, Next.js, MERN, PostgreSQL, Prisma.",
+    "Portfolio of Mehedi Hasan Rihat — crafting high-performance web experiences with React, Next.js & the modern stack.",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
@@ -13,9 +23,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="bg-black text-zinc-50 antialiased">
-        {children}
+    <html lang="en" className="bg-[#0a0a0a]">
+      <head>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap"
+          rel="stylesheet"
+        />
+        <style dangerouslySetInnerHTML={{ __html: `html,body{background:#0a0a0a;color:#fafafa}` }} />
+      </head>
+      <body className="bg-[#0a0a0a] text-zinc-50 antialiased grain">
+        <ShaderBackground />
+        <SmoothScroll>
+          {children}
+        </SmoothScroll>
+        <FancyCursor />
       </body>
     </html>
   );
