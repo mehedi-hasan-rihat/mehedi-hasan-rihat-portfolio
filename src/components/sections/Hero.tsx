@@ -177,20 +177,26 @@ export function Hero() {
           </div>
 
           {/* Right — Profile image */}
-          <div className="lg:col-span-4 hidden lg:flex justify-end">
+          <div className="lg:col-span-4 hidden lg:flex justify-end items-start">
             <div
               ref={imageRef}
-              className="relative w-64 h-80 overflow-hidden"
+              className="relative w-64 h-80 overflow-hidden rounded-2xl group"
             >
               <Image
                 src={site.avatar}
                 alt={site.name}
                 fill
-                className="object-cover object-top grayscale-20 hover:grayscale-0 transition-all duration-700"
+                className="object-cover object-top scale-105 group-hover:scale-100 transition-transform duration-1000 ease-out"
                 priority
               />
-              <div className="absolute inset-0 border border-zinc-700/40" />
-              <div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a]/40 via-transparent to-transparent" />
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/20 to-transparent opacity-60" />
+              {/* Role label */}
+              <div className="absolute bottom-5 left-5 right-5">
+                <div className="text-[10px] text-zinc-400 uppercase tracking-[0.2em] font-mono">
+                  {site.role}
+                </div>
+              </div>
             </div>
           </div>
         </div>
