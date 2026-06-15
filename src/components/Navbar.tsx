@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { LogoAnimated } from "./Logo";
 
 interface NavbarProps {
   name: string;
@@ -25,11 +26,8 @@ export function Navbar({ name }: NavbarProps) {
       ref={navRef}
       className="fixed top-0 left-0 right-0 z-50 px-6 md:px-12 py-8 flex items-center justify-between"
     >
-      <a
-        href="/"
-        className="text-xl font-bold text-white uppercase tracking-wider hover:text-zinc-400 transition-colors"
-      >
-        {name.split(" ")[0]}
+      <a href="/" className="block w-12 h-12 hover:opacity-70 transition-opacity">
+        <LogoAnimated className="w-full h-full" />
       </a>
 
       <a
