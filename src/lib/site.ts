@@ -8,8 +8,7 @@ export const site = {
   location: "Dhaka, Bangladesh",
   email: "mehedi@example.com",
   availability: "Open to opportunities",
-  avatar: "/assets/profile-main.jpg",
-  avatarAlt: "/assets/profile-outdoor.jpg",
+  avatar: "/assets/mehedi.jpeg",
   resumePageHref: "/resume",
   resumePdfHref: null as string | null,
   socials: [

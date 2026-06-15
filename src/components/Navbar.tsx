@@ -40,11 +40,14 @@ export function Navbar({ name }: NavbarProps) {
   return (
     <nav
       ref={navRef}
-      className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-16 lg:px-24 py-6 flex items-center justify-between transition-all duration-500 ${
-        scrolled
-          ? "bg-[#0a0a0a]/80 backdrop-blur-md border-b border-zinc-800/30 py-4"
-          : ""
+      className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-16 lg:px-24 flex items-center justify-between transition-[padding,border-color] duration-300 ${
+        scrolled ? "py-4 border-b border-zinc-800/30" : "py-6 border-b border-transparent"
       }`}
+      style={{
+        background: scrolled ? "rgba(10, 10, 10, 0.85)" : "transparent",
+        backdropFilter: scrolled ? "blur(12px)" : "none",
+        WebkitBackdropFilter: scrolled ? "blur(12px)" : "none",
+      }}
     >
       <a
         ref={logoRef}
