@@ -1,69 +1,124 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { site } from "@/lib/site";
-import { IconExternal } from "../icons";
-import { SectionHeading } from "./SectionHeading";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export function Projects() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Parallax on project images
+      gsap.utils.toArray<HTMLElement>(".project-image").forEach((image) => {
+        gsap.to(image, {
+          y: -100,
+          scrollTrigger: {
+            trigger: image,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+          },
+        });
+      });
+    });
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="projects"
-      className="relative py-12 md:py-20 bg-black text-zinc-50 scroll-mt-28"
+      className="relative min-h-screen px-6 md:px-12 py-32"
     >
-      <div className="max-w-7xl mx-auto px-6">
-        <SectionHeading kicker="Portfolio" title="Featured" emphasize="Works" />
+      <div className="max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
+          {/* Left side - Sticky */}
+          <div className="lg:sticky lg:top-32 lg:h-fit">
+            <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter text-white mb-8">
+              Projects
+            </h2>
+            <div className="w-24 h-[2px] bg-white" />
+            <p className="text-lg text-zinc-500 mt-8">
+              Selected works and case studies
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
-          {site.projects.map((p) => (
-            <a
-              key={p.title}
-              href={p.href}
-              className="group cursor-pointer"
-              target={p.href.startsWith("http") ? "_blank" : undefined}
-              rel={p.href.startsWith("http") ? "noopener noreferrer" : undefined}
-            >
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-zinc-950 border border-white/10 mb-5 transition-all duration-500 group-hover:shadow-xl group-hover:-translate-y-1">
-                <div className="absolute inset-0 p-6 flex items-center justify-center">
-                  <Image
-                    alt={p.title}
-                    className="w-full h-full object-contain drop-shadow-md transition-transform duration-700 ease-out group-hover:scale-105"
-                    src={p.imageSrc}
-                    width={800}
-                    height={600}
+          {/* Right side - Scrolling projects */}
+          <div className="space-y-24">
+            {site.projects.map((project, index) => (
+              <div key={index} className="group">
+                {/* Image */}
+                <div className="relative aspect-video mb-6 overflow-hidden bg-zinc-900">
+                  <img
+                    src={project.imageSrc}
+                    alt={project.title}
+                    className="project-image w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                   />
+                  <div className="absolute inset-0 border border-zinc-800 group-hover:border-zinc-600 transition-colors" />
                 </div>
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center gap-3 transition-opacity duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100">
-                  <span className="p-3 bg-black text-white rounded-full hover:scale-110 active:scale-95 transition-all">
-                    <IconExternal className="w-[18px] h-[18px]" />
-                  </span>
-                </div>
-              </div>
-              <div className="space-y-2 px-1">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">
-                    {p.type}
-                  </span>
-                  <IconExternal className="w-4 h-4 text-zinc-500 group-hover:text-white transition-colors" />
-                </div>
-                <h4 className="text-lg font-bold text-white">{p.title}</h4>
-                <p className="text-xs text-zinc-400 leading-relaxed">
-                  {p.description}
-                </p>
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {p.stack.map((s) => (
-                    <span
-                      key={s}
-                      className="text-[10px] font-mono font-bold text-zinc-200 bg-white/5 border border-white/10 rounded-full px-3 py-1"
-                    >
-                      {s}
+
+                {/* Content */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-zinc-500 uppercase tracking-wider">
+                      {project.type}
                     </span>
-                  ))}
+                    <span className="text-zinc-600 font-mono text-sm">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+
+                  <h3 className="text-3xl md:text-4xl font-bold text-white group-hover:text-zinc-400 transition-colors">
+                    {project.title}
+                  </h3>
+
+                  <p className="text-lg text-zinc-500 leading-relaxed">
+                    {project.description}
+                  </p>
+
+                  {/* Tech stack */}
+                  <div className="flex flex-wrap gap-3 pt-4">
+                    {project.stack.map((tech, i) => (
+                      <span
+                        key={i}
+                        className="text-sm text-zinc-600 border border-zinc-800 px-3 py-1"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Link */}
+                  <a
+                    href={project.href}
+                    className="inline-flex items-center gap-2 text-white hover:text-zinc-400 transition-colors pt-4 group/link"
+                  >
+                    <span className="text-sm uppercase tracking-wider">View Project</span>
+                    <svg
+                      className="w-4 h-4 transform group-hover/link:translate-x-2 transition-transform"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      />
+                    </svg>
+                  </a>
                 </div>
               </div>
-            </a>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
 }
-

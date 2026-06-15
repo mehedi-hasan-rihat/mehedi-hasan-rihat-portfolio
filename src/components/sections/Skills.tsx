@@ -1,43 +1,73 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { site } from "@/lib/site";
-import { SectionHeading } from "./SectionHeading";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export function Skills() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Stagger animation for skills
+      gsap.from(".skill-item", {
+        x: -50,
+        opacity: 0,
+        stagger: 0.1,
+        scrollTrigger: {
+          trigger: ".skills-list",
+          start: "top 80%",
+          end: "top 50%",
+          scrub: 1,
+        },
+      });
+    });
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="skills"
-      className="py-24 bg-black relative overflow-hidden scroll-mt-28"
+      className="relative min-h-screen px-6 md:px-12 py-32"
     >
-      <div
-        className="absolute inset-0 opacity-[0.2] pointer-events-none"
-        style={{
-          backgroundImage:
-            "radial-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1px)",
-          backgroundSize: "30px 30px",
-        }}
-      />
-      <div className="max-w-5xl mx-auto px-6 relative z-10">
-        <SectionHeading kicker="Inventory" title="Tech" emphasize="Stack" />
+      <div className="max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
+          {/* Right side - Sticky */}
+          <div className="lg:order-2 lg:sticky lg:top-32 lg:h-fit">
+            <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter text-white mb-8">
+              Skills
+            </h2>
+            <div className="w-24 h-[2px] bg-white" />
+            <p className="text-lg text-zinc-500 mt-8">
+              Technologies and tools I work with
+            </p>
+          </div>
 
-        <div className="flex flex-wrap justify-center gap-4">
-          {site.skills.map((skill) => (
-            <div
-              key={skill}
-              className={[
-                "group relative px-6 py-3 bg-zinc-950 border border-white/10 rounded-xl",
-                "shadow-[2px_2px_0px_0px_rgba(0,0,0,0.02)]",
-                "hover:border-white hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]",
-                "transition-all duration-300 ease-out flex items-center justify-center",
-              ].join(" ")}
-            >
-              <span className="text-[13px] font-bold tracking-tight text-zinc-200 group-hover:text-white transition-colors">
-                {skill}
-              </span>
-              <div className="absolute top-0 right-0 w-1.5 h-1.5 bg-white scale-0 group-hover:scale-100 transition-transform duration-300 rounded-bl-md" />
-            </div>
-          ))}
+          {/* Left side - Scrolling list */}
+          <div className="lg:order-1 skills-list space-y-6">
+            {site.skills.map((skill, index) => (
+              <div
+                key={index}
+                className="skill-item group border-b border-zinc-800 pb-6 hover:border-zinc-600 transition-colors duration-300"
+              >
+                <div className="flex items-center justify-between">
+                  <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:text-zinc-400 transition-colors">
+                    {skill}
+                  </h3>
+                  <span className="text-zinc-600 font-mono text-sm">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
 }
-

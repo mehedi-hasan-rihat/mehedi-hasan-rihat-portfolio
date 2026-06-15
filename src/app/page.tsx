@@ -25,7 +25,7 @@ function Site() {
   return (
     <>
       <Navbar name={site.name} />
-      <main>
+      <main className="bg-[#111111] relative z-10">
         <Hero />
         <About />
         <Skills />

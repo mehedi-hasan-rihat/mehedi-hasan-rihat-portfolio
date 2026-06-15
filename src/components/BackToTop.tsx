@@ -18,12 +18,14 @@ export function BackToTop() {
       type="button"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       className={[
-        "fixed bottom-8 right-6 p-4 bg-white text-black rounded-full shadow-2xl transition-all duration-500 z-50 md:hidden",
-        visible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-10 scale-50 pointer-events-none",
+        "fixed bottom-8 right-6 p-5 bg-white text-black border-4 border-black shadow-[8px_8px_0_0_rgba(0,0,0,1)] transition-all duration-300 z-50 hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0_0_rgba(0,0,0,1)]",
+        visible
+          ? "opacity-100 translate-y-0 scale-100"
+          : "opacity-0 translate-y-10 scale-50 pointer-events-none",
       ].join(" ")}
       aria-label="Back to top"
     >
-      <IconArrowUp width={20} height={20} />
+      <IconArrowUp width={24} height={24} />
     </button>
   );
 }
