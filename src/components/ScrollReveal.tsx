@@ -1,6 +1,10 @@
 "use client";
 
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface ScrollRevealProps {
   children: ReactNode;
@@ -15,45 +19,45 @@ export function ScrollReveal({
   delay = 0,
   className = "",
 }: ScrollRevealProps) {
-  const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
+    if (!ref.current) return;
+
+    const fromVars: gsap.TweenVars = {
+      clipPath:
+        direction === "left"
+          ? "inset(0 100% 0 0)"
+          : direction === "right"
+            ? "inset(0 0 0 100%)"
+            : "inset(100% 0 0 0)",
+      xPercent: direction === "left" ? -20 : direction === "right" ? 20 : 0,
+      yPercent: direction === "up" ? 20 : 0,
+    };
+
+    const toVars: gsap.TweenVars = {
+      clipPath: "inset(0% 0% 0% 0%)",
+      xPercent: 0,
+      yPercent: 0,
+      duration: 1.2,
+      ease: "power3.out",
+      delay,
+      scrollTrigger: {
+        trigger: ref.current,
+        start: "top 85%",
       },
-      {
-        threshold: 0.1,
-        rootMargin: "0px 0px -100px 0px",
-      }
-    );
+    };
 
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
+    gsap.set(ref.current, fromVars);
+    const tween = gsap.to(ref.current, toVars);
 
-    return () => observer.disconnect();
-  }, []);
-
-  const animationClass =
-    direction === "left"
-      ? "animate-on-scroll-left"
-      : direction === "right"
-        ? "animate-on-scroll-right"
-        : "animate-on-scroll";
+    return () => {
+      tween.kill();
+    };
+  }, [direction, delay]);
 
   return (
-    <div
-      ref={ref}
-      className={`${isVisible ? animationClass : "opacity-0"} ${className}`}
-      style={{
-        animationDelay: isVisible ? `${delay}ms` : "0ms",
-      }}
-    >
+    <div ref={ref} className={className}>
       {children}
     </div>
   );

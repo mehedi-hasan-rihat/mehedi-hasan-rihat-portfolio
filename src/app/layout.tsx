@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { FancyCursor } from "@/components/FancyCursor";
 import { ShaderBackground } from "@/components/ShaderBackground";
+import { SmoothScroll } from "@/components/SmoothScroll";
 
 export const metadata: Metadata = {
   title: "Mehedi Hasan Rihat — Full‑Stack Web Developer",
   description:
-    "Portfolio of Mehedi Hasan Rihat — React, Next.js, MERN, PostgreSQL, Prisma.",
+    "Portfolio of Mehedi Hasan Rihat — crafting high-performance web experiences with React, Next.js & the modern stack.",
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },
@@ -25,10 +26,18 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap"
+          rel="stylesheet"
+        />
       </head>
-      <body className="bg-black text-zinc-50 antialiased">
+      <body className="bg-[#0a0a0a] text-zinc-50 antialiased grain">
         <ShaderBackground />
-        {children}
+        <SmoothScroll>
+          {children}
+        </SmoothScroll>
         <FancyCursor />
       </body>
     </html>

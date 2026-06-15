@@ -9,20 +9,30 @@ gsap.registerPlugin(ScrollTrigger);
 
 export function Skills() {
   const sectionRef = useRef<HTMLElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Stagger animation for skills
-      gsap.from(".skill-item", {
-        x: -50,
-        opacity: 0,
-        stagger: 0.1,
-        scrollTrigger: {
-          trigger: ".skills-list",
-          start: "top 80%",
-          end: "top 50%",
-          scrub: 1,
-        },
+      // Heading reveal
+      gsap.set(headingRef.current, { clipPath: "inset(0 0 100% 0)" });
+      gsap.to(headingRef.current, {
+        clipPath: "inset(0 0 0% 0)",
+        duration: 1.2,
+        ease: "power4.inOut",
+        scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
+      });
+
+      // Skill items — stagger in with scale and clip
+      const items = gridRef.current?.querySelectorAll(".skill-pill") || [];
+      gsap.set(items, { scale: 0.8, clipPath: "inset(20%)" });
+      gsap.to(items, {
+        scale: 1,
+        clipPath: "inset(0%)",
+        stagger: { amount: 0.8, grid: "auto", from: "start" },
+        duration: 0.8,
+        ease: "back.out(1.4)",
+        scrollTrigger: { trigger: gridRef.current, start: "top 80%" },
       });
     });
 
@@ -33,38 +43,56 @@ export function Skills() {
     <section
       ref={sectionRef}
       id="skills"
-      className="relative min-h-screen px-6 md:px-12 py-32"
+      className="relative px-6 md:px-16 lg:px-24 py-32 md:py-40"
     >
       <div className="max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
-          {/* Right side - Sticky */}
-          <div className="lg:order-2 lg:sticky lg:top-32 lg:h-fit">
-            <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter text-white mb-8">
-              Skills
-            </h2>
-            <div className="w-24 h-[2px] bg-white" />
-            <p className="text-lg text-zinc-500 mt-8">
-              Technologies and tools I work with
+        {/* Section label */}
+        <div className="mb-4">
+          <span className="text-[11px] text-zinc-600 uppercase tracking-[0.3em] font-mono">
+            02 / Skills
+          </span>
+        </div>
+
+        <div className="grid lg:grid-cols-12 gap-16">
+          {/* Heading */}
+          <div className="lg:col-span-5">
+            <div className="overflow-hidden mb-8">
+              <h2
+                ref={headingRef}
+                className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-white leading-[0.9]"
+              >
+                Tools &
+                <br />
+                <span className="text-zinc-500">Stack</span>
+              </h2>
+            </div>
+            <p className="text-base text-zinc-500 leading-relaxed max-w-md">
+              Technologies I use daily to build performant, scalable applications — from concept to deployment.
             </p>
           </div>
 
-          {/* Left side - Scrolling list */}
-          <div className="lg:order-1 skills-list space-y-6">
-            {site.skills.map((skill, index) => (
-              <div
-                key={index}
-                className="skill-item group border-b border-zinc-800 pb-6 hover:border-zinc-600 transition-colors duration-300"
-              >
-                <div className="flex items-center justify-between">
-                  <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:text-zinc-400 transition-colors">
-                    {skill}
-                  </h3>
-                  <span className="text-zinc-600 font-mono text-sm">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
+          {/* Skills grid */}
+          <div className="lg:col-span-7">
+            <div ref={gridRef} className="flex flex-wrap gap-3">
+              {site.skills.map((skill, index) => (
+                <div
+                  key={index}
+                  className="skill-pill group relative px-6 py-4 border border-zinc-800 bg-zinc-900/40 backdrop-blur-sm hover:border-zinc-500 hover:bg-zinc-800/60 transition-all duration-500"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-[10px] text-zinc-700 font-mono">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="text-base text-zinc-200 font-medium group-hover:text-white transition-colors duration-300">
+                      {skill.name}
+                    </span>
+                  </div>
+                  <div className="absolute top-2 right-3 text-[9px] text-zinc-700 uppercase tracking-wider">
+                    {skill.category}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
