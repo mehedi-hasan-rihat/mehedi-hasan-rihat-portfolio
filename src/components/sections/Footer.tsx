@@ -1,52 +1,83 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { site } from "@/lib/site";
+import { LogoMinimal } from "../Logo";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export function Footer() {
+  const footerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const items = footerRef.current?.querySelectorAll(".footer-item") || [];
+      gsap.set(items, { yPercent: 40, clipPath: "inset(30% 0 0 0)" });
+      gsap.to(items, {
+        yPercent: 0,
+        clipPath: "inset(0% 0 0 0)",
+        stagger: 0.1,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: { trigger: footerRef.current, start: "top 90%" },
+      });
+    });
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <footer className="py-12 bg-black border-t border-white/10">
-      <div className="max-w-5xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
-          <div className="md:col-span-4">
-            <h3 className="text-base font-black uppercase tracking-tighter mb-2 text-white">
-              {site.name}
-            </h3>
-            <p className="text-[11px] font-mono text-zinc-300 font-bold uppercase tracking-widest leading-loose">
-              {site.role}
-            </p>
+    <footer
+      ref={footerRef}
+      className="relative py-16 px-6 md:px-16 lg:px-24 border-t border-zinc-800/50"
+    >
+      <div className="max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-12 items-center mb-12">
+          {/* Logo */}
+          <div className="footer-item">
+            <div className="w-14 h-14 opacity-40 hover:opacity-100 transition-opacity duration-500">
+              <LogoMinimal className="w-full h-full" />
+            </div>
           </div>
-          <div className="md:col-span-4 flex md:justify-center gap-8">
-            <a
-              href="#about"
-              className="text-[11px] font-mono font-bold text-zinc-300 hover:text-white uppercase tracking-widest transition-colors relative group"
-            >
-              About
-              <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-white transition-all group-hover:w-full" />
-            </a>
-            <a
-              href="#projects"
-              className="text-[11px] font-mono font-bold text-zinc-300 hover:text-white uppercase tracking-widest transition-colors relative group"
-            >
-              Work
-              <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-white transition-all group-hover:w-full" />
-            </a>
-            <a
-              href="#connect"
-              className="text-[11px] font-mono font-bold text-zinc-300 hover:text-white uppercase tracking-widest transition-colors relative group"
-            >
-              Connect
-              <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-white transition-all group-hover:w-full" />
-            </a>
+
+          {/* Links */}
+          <div className="footer-item flex flex-wrap justify-center gap-8">
+            {site.socials.map((social, index) => (
+              <a
+                key={index}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-zinc-600 hover:text-white transition-colors duration-300 text-xs uppercase tracking-wider hover-line"
+              >
+                {social.label}
+              </a>
+            ))}
           </div>
-          <div className="md:col-span-4 text-left md:text-right">
-            <p className="text-[11px] font-mono text-zinc-400 font-bold uppercase tracking-widest mb-1">
-              © {new Date().getFullYear()} Global Edition
-            </p>
-            <p className="text-[11px] font-mono font-black text-white uppercase tracking-widest">
-              All Rights Reserved
-            </p>
+
+          {/* Back to top */}
+          <div className="footer-item flex justify-end">
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="text-zinc-600 hover:text-white transition-colors duration-300 text-xs uppercase tracking-wider hover-line"
+            >
+              Back to top ↑
+            </button>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="footer-item flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-zinc-900">
+          <div className="text-zinc-700 text-xs font-mono">
+            © {new Date().getFullYear()} {site.name}
+          </div>
+          <div className="text-zinc-700 text-xs font-mono">
+            Designed & Built with precision
           </div>
         </div>
       </div>
     </footer>
   );
 }
-

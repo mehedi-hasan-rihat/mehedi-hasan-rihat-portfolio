@@ -1,83 +1,107 @@
+/**
+ * Computes a human-readable duration string from a start date to now.
+ * e.g. "Mar 2025 — Present · ~1.5 years"
+ */
+export function getDuration(startDate: string): string {
+  const start = new Date(startDate);
+  const now = new Date();
+  const months = (now.getFullYear() - start.getFullYear()) * 12 + (now.getMonth() - start.getMonth());
+  const years = months / 12;
+
+  const startStr = start.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+
+  if (years < 1) {
+    return `${startStr} — Present · ${months} month${months !== 1 ? "s" : ""}`;
+  }
+
+  const rounded = Math.round(years * 2) / 2; // round to nearest 0.5
+  return `${startStr} — Present · ~${rounded} year${rounded !== 1 ? "s" : ""}`;
+}
+
 export const site = {
   name: "Mehedi Hasan Rihat",
-  role: "Full‑Stack Web Developer",
+  initials: "MHR",
+  role: "Software Developer",
   tagline:
-    "I build fast, accessible web products with React, Next.js, and the MERN stack — backed by PostgreSQL + Prisma.",
+    "Crafting high-performance web experiences with React, Next.js & the modern stack.",
+  bio: "I design and build production-grade web applications that are fast, accessible, and built to scale. My approach combines clean architecture with thoughtful UI — shipping products that users love and teams can maintain.",
   location: "Dhaka, Bangladesh",
   email: "mehedi@example.com",
+  availability: "Open to opportunities",
+  avatar: "/assets/mehedi.jpeg",
   resumePageHref: "/resume",
   resumePdfHref: null as string | null,
   socials: [
-    { label: "GitHub", href: "https://github.com/your-username" },
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/your-handle/" },
-    { label: "X", href: "https://x.com/your-handle" },
+    { label: "GitHub", href: "https://github.com/your-username", icon: "github" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/your-handle/", icon: "linkedin" },
+    { label: "X", href: "https://x.com/your-handle", icon: "x" },
   ],
   skills: [
-    "React",
-    "Next.js",
-    "TypeScript",
-    "Node.js",
-    "Express",
-    "MongoDB",
-    "PostgreSQL",
-    "Prisma",
-    "Tailwind CSS",
-    "REST APIs",
-    "Git/GitHub",
-    "Docker (Basics)",
+    { name: "React", category: "Frontend" },
+    { name: "Next.js", category: "Frontend" },
+    { name: "TypeScript", category: "Language" },
+    { name: "Node.js", category: "Backend" },
+    { name: "Express", category: "Backend" },
+    { name: "MongoDB", category: "Database" },
+    { name: "PostgreSQL", category: "Database" },
+    { name: "Prisma", category: "ORM" },
+    { name: "Tailwind CSS", category: "Styling" },
+    { name: "REST APIs", category: "Architecture" },
+    { name: "Git/GitHub", category: "Tooling" },
+    { name: "Docker", category: "DevOps" },
   ],
   projects: [
     {
       title: "SaaS Dashboard",
       type: "Full‑Stack",
       description:
-        "Multi-tenant dashboard with auth, billing-ready structure, and a clean component system.",
+        "Multi-tenant analytics dashboard with role-based auth, billing integration, and a modular component system built for scale.",
       stack: ["Next.js", "PostgreSQL", "Prisma", "Tailwind"],
       href: "#",
       imageSrc: "/assets/project-dashboard.svg",
+      year: "2025",
     },
     {
       title: "E‑Commerce Storefront",
       type: "Web App",
       description:
-        "Fast product browsing, search, and checkout flow with a focus on UX and performance.",
-      stack: ["React", "Node.js", "MongoDB"],
+        "Lightning-fast product browsing with optimistic UI, instant search, and a streamlined checkout flow focused on conversion.",
+      stack: ["React", "Node.js", "MongoDB", "Stripe"],
       href: "#",
       imageSrc: "/assets/project-store.svg",
+      year: "2024",
     },
     {
       title: "Portfolio System",
       type: "Design + Dev",
       description:
-        "A modular portfolio template you can extend with blogs, projects, and activity feeds.",
-      stack: ["Next.js", "MDX (optional)"],
+        "A modular, animated portfolio template with MDX blog support, project showcases, and activity feeds — fully customizable.",
+      stack: ["Next.js", "GSAP", "Three.js", "MDX"],
       href: "#",
       imageSrc: "/assets/project-portfolio.svg",
+      year: "2024",
     },
   ],
   experience: [
     {
-      company: "Freelance",
-      role: "Full‑Stack Developer",
+      company: "Nexbell Inc.",
+      product: "Sellzzy — E-commerce Builder Platform",
+      role: "Frontend Developer",
       location: "Remote",
-      duration: "2024 — Present",
+      startDate: "2025-03",
+      duration: null, // computed dynamically
       bullets: [
-        "Ship production web apps with Next.js + React and pragmatic backend architecture.",
-        "Integrate APIs, databases, and authentication with a focus on security and DX.",
-        "Improve Core Web Vitals via image optimization, code-splitting, and caching.",
+        "Built core modules including Order Management, Customer Management, Courier Management, and Store Dashboard — directly impacting merchant workflow efficiency.",
+        "Improved frontend performance using Next.js (SSR, SSG, ISR), achieving faster page loads and SEO-friendly storefront rendering.",
+        "Implemented automated end-to-end testing with Playwright, improving stability and reducing production bugs in critical user flows.",
+        "Set up Storybook for component documentation, enabling consistent UI development and streamlined design-engineering collaboration.",
+        "Designed and implemented responsive, reusable UI components with React and Next.js, improving design consistency across the entire platform.",
+        "Applied caching strategies and optimized data-fetching flows, reducing unnecessary re-renders and improving page speed metrics.",
+        "Integrated REST APIs for dynamic data handling across both storefront and admin dashboard systems.",
+        "Collaborated with product and backend teams to translate complex SaaS requirements into scalable, maintainable frontend solutions.",
+        "Contributed to frontend architecture improvements, enhancing codebase maintainability and long-term scalability.",
       ],
-      tools: ["Next.js", "React", "PostgreSQL", "Prisma", "Node.js"],
-    },
-    {
-      company: "Internship / Contract",
-      role: "Web Developer",
-      location: "On-site / Remote",
-      duration: "2023 — 2024",
-      bullets: [
-        "Built reusable UI components and page templates in a design-system mindset.",
-        "Collaborated with designers to translate Figma into responsive UI quickly.",
-      ],
-      tools: ["React", "Tailwind", "Git", "Figma"],
+      tools: ["React", "Next.js", "TypeScript", "Tailwind CSS", "REST APIs", "SSR/SSG/ISR", "Playwright", "Storybook"],
     },
   ],
   blogs: [
@@ -102,4 +126,10 @@ export const site = {
       href: "#",
     },
   ],
+  stats: {
+    projects: "10+",
+    experience: "1.5+",
+    clients: "15+",
+    commits: "1.2K+",
+  },
 } as const;

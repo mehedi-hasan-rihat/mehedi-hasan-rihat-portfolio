@@ -2,8 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 
-type CursorMode = "default" | "hover" | "down";
-
 function prefersReducedMotion(): boolean {
   if (typeof window === "undefined") return false;
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -17,13 +15,14 @@ function hasFinePointer(): boolean {
 export function FancyCursor() {
   const [visible, setVisible] = useState(false);
   const visibleRef = useRef(false);
-  const modeRef = useRef<CursorMode>("default");
+  const hoverRef = useRef(false);
+  const pressRef = useRef(false);
 
   const dotEl = useRef<HTMLDivElement | null>(null);
   const ringEl = useRef<HTMLDivElement | null>(null);
 
-  const mouse = useRef({ x: 0, y: 0 });
-  const ring = useRef({ x: 0, y: 0 });
+  const mouse = useRef({ x: -100, y: -100 });
+  const ring = useRef({ x: -100, y: -100 });
   const rafId = useRef<number | null>(null);
 
   useEffect(() => {
@@ -33,12 +32,6 @@ export function FancyCursor() {
     const root = document.documentElement;
     root.classList.add("has-fancy-cursor");
 
-    const updateMode = (next: CursorMode) => {
-      if (modeRef.current === next) return;
-      modeRef.current = next;
-      root.setAttribute("data-cursor-mode", next);
-    };
-
     const onMove = (e: MouseEvent) => {
       if (!visibleRef.current) {
         visibleRef.current = true;
@@ -47,8 +40,10 @@ export function FancyCursor() {
       mouse.current.x = e.clientX;
       mouse.current.y = e.clientY;
 
+      // Dot follows mouse exactly — no lag
       if (dotEl.current) {
-        dotEl.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+        dotEl.current.style.left = `${e.clientX}px`;
+        dotEl.current.style.top = `${e.clientY}px`;
       }
     };
 
@@ -57,40 +52,61 @@ export function FancyCursor() {
       if (target.closest('[data-cursor="default"]')) return false;
       if (target.closest('[data-cursor="hover"]')) return true;
       return Boolean(
-        target.closest(
-          'a, button, [role="button"], input, textarea, select, summary, label'
-        )
+        target.closest('a, button, [role="button"], input, textarea, select, summary, label')
       );
     };
 
     const onOver = (e: MouseEvent) => {
-      if (isInteractive(e.target)) updateMode("hover");
+      if (isInteractive(e.target)) {
+        hoverRef.current = true;
+        ringEl.current?.classList.add("is-hover");
+        dotEl.current?.classList.add("is-hover");
+      }
     };
 
     const onOut = (e: MouseEvent) => {
-      const related = e.relatedTarget;
-      if (isInteractive(related)) return;
-      updateMode("default");
+      if (!isInteractive(e.relatedTarget)) {
+        hoverRef.current = false;
+        ringEl.current?.classList.remove("is-hover");
+        dotEl.current?.classList.remove("is-hover");
+      }
     };
 
-    const onDown = () => updateMode("down");
-    const isInteractiveAtPointer = () =>
-      isInteractive(document.elementFromPoint(mouse.current.x, mouse.current.y));
-    const onUp = () => updateMode(isInteractiveAtPointer() ? "hover" : "default");
+    const onDown = () => {
+      pressRef.current = true;
+      ringEl.current?.classList.add("is-press");
+    };
 
-    // Start ring from current mouse pos to avoid a jump.
+    const onUp = () => {
+      pressRef.current = false;
+      ringEl.current?.classList.remove("is-press");
+    };
+
+    const onLeave = () => {
+      visibleRef.current = false;
+      setVisible(false);
+    };
+
+    const onEnter = () => {
+      visibleRef.current = true;
+      setVisible(true);
+    };
+
+    // Ring position — smooth spring follow
     ring.current.x = mouse.current.x;
     ring.current.y = mouse.current.y;
 
     const tick = () => {
-      const stiffness = modeRef.current === "down" ? 0.22 : 0.16;
-      ring.current.x += (mouse.current.x - ring.current.x) * stiffness;
-      ring.current.y += (mouse.current.y - ring.current.y) * stiffness;
+      const ease = hoverRef.current ? 0.08 : 0.15;
+      ring.current.x += (mouse.current.x - ring.current.x) * ease;
+      ring.current.y += (mouse.current.y - ring.current.y) * ease;
 
       if (ringEl.current) {
-        ringEl.current.style.transform = `translate3d(${ring.current.x}px, ${ring.current.y}px, 0)`;
+        ringEl.current.style.left = `${ring.current.x}px`;
+        ringEl.current.style.top = `${ring.current.y}px`;
       }
-      rafId.current = window.requestAnimationFrame(tick);
+
+      rafId.current = requestAnimationFrame(tick);
     };
 
     window.addEventListener("mousemove", onMove, { passive: true });
@@ -98,17 +114,20 @@ export function FancyCursor() {
     window.addEventListener("mouseout", onOut, { passive: true });
     window.addEventListener("mousedown", onDown, { passive: true });
     window.addEventListener("mouseup", onUp, { passive: true });
-    rafId.current = window.requestAnimationFrame(tick);
+    document.addEventListener("mouseleave", onLeave);
+    document.addEventListener("mouseenter", onEnter);
+    rafId.current = requestAnimationFrame(tick);
 
     return () => {
       root.classList.remove("has-fancy-cursor");
-      root.removeAttribute("data-cursor-mode");
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseover", onOver);
       window.removeEventListener("mouseout", onOut);
       window.removeEventListener("mousedown", onDown);
       window.removeEventListener("mouseup", onUp);
-      if (rafId.current) window.cancelAnimationFrame(rafId.current);
+      document.removeEventListener("mouseleave", onLeave);
+      document.removeEventListener("mouseenter", onEnter);
+      if (rafId.current) cancelAnimationFrame(rafId.current);
     };
   }, []);
 
@@ -116,14 +135,12 @@ export function FancyCursor() {
     <>
       <div
         ref={dotEl}
-        className="fancy-cursor fancy-cursor-dot"
-        data-visible={visible ? "true" : "false"}
+        className={`cursor-dot ${visible ? "is-visible" : ""}`}
         aria-hidden="true"
       />
       <div
         ref={ringEl}
-        className="fancy-cursor fancy-cursor-ring"
-        data-visible={visible ? "true" : "false"}
+        className={`cursor-ring ${visible ? "is-visible" : ""}`}
         aria-hidden="true"
       />
     </>

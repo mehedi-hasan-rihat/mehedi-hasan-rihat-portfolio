@@ -1,105 +1,86 @@
 "use client";
 
-import * as React from "react";
-import { IconMenu } from "./icons";
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { LogoAnimated } from "./Logo";
 
-const links = [
-  { href: "#about", label: "About" },
-  { href: "#skills", label: "Skills" },
-  { href: "#projects", label: "Projects" },
-  { href: "#experience", label: "Experience" },
-  { href: "#blogs", label: "Blogs" },
-  { href: "#connect", label: "Connect" },
-] as const;
+gsap.registerPlugin(ScrollTrigger);
 
-export function Navbar({ name }: { name: string }) {
-  const [open, setOpen] = React.useState(false);
-  const [scrolled, setScrolled] = React.useState(false);
+interface NavbarProps {
+  name: string;
+}
 
-  React.useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
+export function Navbar({ name }: NavbarProps) {
+  const navRef = useRef<HTMLElement>(null);
+  const logoRef = useRef<HTMLAnchorElement>(null);
+  const linksRef = useRef<HTMLDivElement>(null);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    // Entrance animation
+    const tl = gsap.timeline({
+      defaults: { ease: "expo.out", duration: 1.4 },
+      delay: 1.5,
+    });
+
+    gsap.set(logoRef.current, { xPercent: -50, clipPath: "inset(0 100% 0 0)" });
+    tl.to(logoRef.current, { xPercent: 0, clipPath: "inset(0 0% 0 0)" });
+
+    const links = linksRef.current?.querySelectorAll(".nav-link") || [];
+    gsap.set(links, { yPercent: 100 });
+    tl.to(links, { yPercent: 0, stagger: 0.08, duration: 0.8 }, "-=0.8");
+
+    // Scroll-based background
+    const onScroll = () => setScrolled(window.scrollY > 100);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  React.useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
-
   return (
     <nav
-      className={[
-        "fixed top-0 w-full z-[100] transition-all duration-500",
-        scrolled
-          ? "bg-black/80 backdrop-blur-md border-b border-white/10"
-          : "bg-transparent",
-      ].join(" ")}
-      style={{ fontFamily: "var(--font-sans), system-ui, sans-serif" }}
+      ref={navRef}
+      className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-16 lg:px-24 flex items-center justify-between transition-[padding,border-color] duration-300 ${
+        scrolled ? "py-4 border-b border-zinc-800/30" : "py-6 border-b border-transparent"
+      }`}
+      style={{
+        background: scrolled ? "rgba(10, 10, 10, 0.85)" : "transparent",
+        backdropFilter: scrolled ? "blur(12px)" : "none",
+        WebkitBackdropFilter: scrolled ? "blur(12px)" : "none",
+      }}
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <div className="flex justify-between items-center relative py-5 md:py-6">
-          <a href="#" className="flex flex-col group cursor-pointer select-none">
-            <span className="font-extrabold text-xl uppercase tracking-tighter leading-none text-white">
-              {name.split(" ")[0]}{" "}
-              <span className="text-zinc-400 group-hover:text-white transition-colors duration-500">
-                {name.split(" ").slice(1).join(" ")}
-              </span>
-            </span>
-            <span className="text-[9px] font-mono uppercase tracking-[0.4em] text-zinc-400 mt-1.5 flex items-center gap-2">
-              <span className="w-2 h-[1px] bg-white/30" />
-              Full‑Stack Developer
-            </span>
+      <a
+        ref={logoRef}
+        href="/"
+        className="block w-10 h-10 hover:scale-110 transition-transform duration-300"
+      >
+        <LogoAnimated className="w-full h-full" />
+      </a>
+
+      <div ref={linksRef} className="flex items-center gap-8">
+        <div className="overflow-hidden">
+          <a
+            href="#projects"
+            className="nav-link block text-[11px] text-zinc-500 uppercase tracking-wider hover:text-white transition-colors duration-300"
+          >
+            Work
           </a>
-
-          <div className="hidden md:flex items-center gap-8">
-            {links.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                className="relative text-[12px] font-semibold uppercase tracking-widest text-zinc-400 hover:text-white transition-colors duration-300 group"
-              >
-                {l.label}
-                <span className="absolute -bottom-2 left-1/2 w-0 h-[1.5px] bg-white transition-all duration-300 group-hover:w-full group-hover:left-0" />
-              </a>
-            ))}
-          </div>
-
-          <button
-            type="button"
-            className="md:hidden p-2 text-white transition-colors rounded-lg hover:bg-white/10"
-            onClick={() => setOpen((v) => !v)}
-            aria-expanded={open}
-            aria-controls="mobile-nav"
+        </div>
+        <div className="overflow-hidden">
+          <a
+            href="#about"
+            className="nav-link block text-[11px] text-zinc-500 uppercase tracking-wider hover:text-white transition-colors duration-300"
           >
-            <IconMenu width={22} height={22} />
-            <span className="sr-only">Open menu</span>
-          </button>
-
-          <div
-            id="mobile-nav"
-            className={[
-              "absolute top-full right-0 mt-4 w-56 bg-zinc-950 border border-white/10 rounded-2xl shadow-xl transition-all duration-300 ease-out origin-top-right",
-              open ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 -translate-y-2 pointer-events-none",
-            ].join(" ")}
+            About
+          </a>
+        </div>
+        <div className="overflow-hidden">
+          <a
+            href="#connect"
+            className="nav-link block text-[11px] text-zinc-500 uppercase tracking-wider hover:text-white transition-colors duration-300 border border-zinc-700 px-4 py-2 hover:border-zinc-400"
           >
-            <div className="flex flex-col p-3">
-              {links.map((l) => (
-                <a
-                  key={l.href}
-                  href={l.href}
-                  className="px-4 py-3 text-sm font-bold tracking-tight text-zinc-300 hover:text-white hover:bg-white/5 rounded-xl transition-all"
-                  onClick={() => setOpen(false)}
-                >
-                  {l.label}
-                </a>
-              ))}
-            </div>
-          </div>
+            Contact
+          </a>
         </div>
       </div>
     </nav>

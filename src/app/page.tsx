@@ -2,7 +2,6 @@ import { Navbar } from "@/components/Navbar";
 import { BackToTop } from "@/components/BackToTop";
 import {
   About,
-  Activity,
   Blogs,
   Connect,
   Experience,
@@ -16,27 +15,24 @@ import { site } from "@/lib/site";
 export default function Home() {
   return (
     <div id="top">
-      <Site />
-    </div>
-  );
-}
-
-function Site() {
-  return (
-    <>
       <Navbar name={site.name} />
-      <main>
+      <main className="relative z-10">
         <Hero />
+        <div className="section-divider max-w-6xl mx-auto" />
         <About />
+        <div className="section-divider max-w-6xl mx-auto" />
         <Skills />
-        <Projects />
+        <div className="section-divider max-w-6xl mx-auto" />
+        {/* <Projects /> */}
+        <div className="section-divider max-w-6xl mx-auto" />
         <Experience />
-        {/* <Activity /> */}
+        <div className="section-divider max-w-6xl mx-auto" />
         <Blogs />
+        <div className="section-divider max-w-6xl mx-auto" />
         <Connect />
       </main>
       <Footer />
       <BackToTop />
-    </>
+    </div>
   );
 }
