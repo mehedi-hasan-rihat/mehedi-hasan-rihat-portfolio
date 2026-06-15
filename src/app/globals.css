@@ -170,59 +170,67 @@ body {
   cursor: none;
 }
 
-.fancy-cursor {
+/* Dot — small, sharp, instant tracking */
+.cursor-dot {
   position: fixed;
-  left: 0;
-  top: 0;
   z-index: 2147483647;
   pointer-events: none;
-  user-select: none;
-  translate: -50% -50%;
-  will-change: transform;
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  margin-top: -4px;
+  border-radius: 50%;
+  background: #fff;
   opacity: 0;
-  transition: opacity 200ms ease;
+  transition: opacity 0.2s ease, transform 0.2s ease, width 0.3s ease, height 0.3s ease, margin 0.3s ease;
+  mix-blend-mode: difference;
 }
 
-.fancy-cursor[data-visible="true"] {
+.cursor-dot.is-visible {
   opacity: 1;
 }
 
-.fancy-cursor-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 9999px;
-  background: #ffffff;
-  mix-blend-mode: difference;
+.cursor-dot.is-hover {
+  width: 0px;
+  height: 0px;
+  margin-left: 0px;
+  margin-top: 0px;
 }
 
-.fancy-cursor-ring {
-  width: 40px;
-  height: 40px;
-  border-radius: 9999px;
-  border: 1.5px solid rgba(255, 255, 255, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  mix-blend-mode: difference;
-  backdrop-filter: blur(1px);
-}
-
-.cursor-label {
-  font-size: 9px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: white;
+/* Ring — smooth trailing circle */
+.cursor-ring {
+  position: fixed;
+  z-index: 2147483646;
+  pointer-events: none;
+  width: 36px;
+  height: 36px;
+  margin-left: -18px;
+  margin-top: -18px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
   opacity: 0;
-  transform: scale(0.5);
-  white-space: nowrap;
+  transition: opacity 0.2s ease, width 0.4s cubic-bezier(0.25, 1, 0.5, 1), height 0.4s cubic-bezier(0.25, 1, 0.5, 1), margin 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease, background 0.3s ease;
+  mix-blend-mode: difference;
 }
 
-html[data-cursor-mode="hover"] .fancy-cursor-ring {
-  border-color: rgba(255, 255, 255, 0.6);
+.cursor-ring.is-visible {
+  opacity: 1;
 }
 
-html[data-cursor-mode="down"] .fancy-cursor-ring {
+.cursor-ring.is-hover {
+  width: 64px;
+  height: 64px;
+  margin-left: -32px;
+  margin-top: -32px;
+  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.cursor-ring.is-press {
+  width: 28px;
+  height: 28px;
+  margin-left: -14px;
+  margin-top: -14px;
   border-color: rgba(255, 255, 255, 0.9);
 }
 

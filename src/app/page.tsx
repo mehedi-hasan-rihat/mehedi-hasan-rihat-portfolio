@@ -23,7 +23,7 @@ export default function Home() {
         <div className="section-divider max-w-6xl mx-auto" />
         <Skills />
         <div className="section-divider max-w-6xl mx-auto" />
-        <Projects />
+        {/* <Projects /> */}
         <div className="section-divider max-w-6xl mx-auto" />
         <Experience />
         <div className="section-divider max-w-6xl mx-auto" />

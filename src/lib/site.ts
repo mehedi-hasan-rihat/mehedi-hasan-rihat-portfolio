@@ -1,7 +1,27 @@
+/**
+ * Computes a human-readable duration string from a start date to now.
+ * e.g. "Mar 2025 — Present · ~1.5 years"
+ */
+export function getDuration(startDate: string): string {
+  const start = new Date(startDate);
+  const now = new Date();
+  const months = (now.getFullYear() - start.getFullYear()) * 12 + (now.getMonth() - start.getMonth());
+  const years = months / 12;
+
+  const startStr = start.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+
+  if (years < 1) {
+    return `${startStr} — Present · ${months} month${months !== 1 ? "s" : ""}`;
+  }
+
+  const rounded = Math.round(years * 2) / 2; // round to nearest 0.5
+  return `${startStr} — Present · ~${rounded} year${rounded !== 1 ? "s" : ""}`;
+}
+
 export const site = {
   name: "Mehedi Hasan Rihat",
   initials: "MHR",
-  role: "Full‑Stack Web Developer",
+  role: "Software Developer",
   tagline:
     "Crafting high-performance web experiences with React, Next.js & the modern stack.",
   bio: "I design and build production-grade web applications that are fast, accessible, and built to scale. My approach combines clean architecture with thoughtful UI — shipping products that users love and teams can maintain.",
@@ -64,27 +84,24 @@ export const site = {
   ],
   experience: [
     {
-      company: "Freelance",
-      role: "Full‑Stack Developer",
+      company: "Nexbell Inc.",
+      product: "Sellzzy — E-commerce Builder Platform",
+      role: "Frontend Developer",
       location: "Remote",
-      duration: "2024 — Present",
+      startDate: "2025-03",
+      duration: null, // computed dynamically
       bullets: [
-        "Ship production web apps with Next.js + React and pragmatic backend architecture.",
-        "Integrate APIs, databases, and authentication with a focus on security and DX.",
-        "Improve Core Web Vitals via image optimization, code-splitting, and caching strategies.",
+        "Built core modules including Order Management, Customer Management, Courier Management, and Store Dashboard — directly impacting merchant workflow efficiency.",
+        "Improved frontend performance using Next.js (SSR, SSG, ISR), achieving faster page loads and SEO-friendly storefront rendering.",
+        "Implemented automated end-to-end testing with Playwright, improving stability and reducing production bugs in critical user flows.",
+        "Set up Storybook for component documentation, enabling consistent UI development and streamlined design-engineering collaboration.",
+        "Designed and implemented responsive, reusable UI components with React and Next.js, improving design consistency across the entire platform.",
+        "Applied caching strategies and optimized data-fetching flows, reducing unnecessary re-renders and improving page speed metrics.",
+        "Integrated REST APIs for dynamic data handling across both storefront and admin dashboard systems.",
+        "Collaborated with product and backend teams to translate complex SaaS requirements into scalable, maintainable frontend solutions.",
+        "Contributed to frontend architecture improvements, enhancing codebase maintainability and long-term scalability.",
       ],
-      tools: ["Next.js", "React", "PostgreSQL", "Prisma", "Node.js"],
-    },
-    {
-      company: "Internship / Contract",
-      role: "Web Developer",
-      location: "On-site / Remote",
-      duration: "2023 — 2024",
-      bullets: [
-        "Built reusable UI components and page templates in a design-system mindset.",
-        "Collaborated with designers to translate Figma mockups into responsive, pixel-perfect UI.",
-      ],
-      tools: ["React", "Tailwind", "Git", "Figma"],
+      tools: ["React", "Next.js", "TypeScript", "Tailwind CSS", "REST APIs", "SSR/SSG/ISR", "Playwright", "Storybook"],
     },
   ],
   blogs: [
@@ -111,7 +128,7 @@ export const site = {
   ],
   stats: {
     projects: "10+",
-    experience: "2+",
+    experience: "1.5+",
     clients: "15+",
     commits: "1.2K+",
   },

@@ -49,11 +49,11 @@ export function BackToTop() {
       ref={buttonRef}
       type="button"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className="fixed bottom-8 right-6 p-5 bg-white text-black border-4 border-black shadow-[8px_8px_0_0_rgba(0,0,0,1)] z-50 hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0_0_rgba(0,0,0,1)] transition-all duration-200"
+      className="fixed bottom-24 right-6 p-4 bg-white text-black z-50 hover:-translate-y-1 transition-transform duration-200 shadow-lg"
       style={{ transform: "translateY(100%) scale(0.7)", pointerEvents: "none" }}
       aria-label="Back to top"
     >
-      <IconArrowUp width={24} height={24} />
+      <IconArrowUp width={20} height={20} />
     </button>
   );
 }

@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { site } from "@/lib/site";
+import { site, getDuration } from "@/lib/site";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -91,17 +91,22 @@ export function Experience() {
               <div className="exp-content pb-8">
                 {/* Duration badge */}
                 <div className="inline-block mb-4 px-3 py-1 border border-zinc-800 text-[11px] text-zinc-500 uppercase tracking-wider font-mono">
-                  {exp.duration}
+                  {exp.duration ?? getDuration(exp.startDate)}
                 </div>
 
                 {/* Role + Company */}
                 <h3 className="text-2xl md:text-3xl font-bold text-white mb-1 group-hover:translate-x-1 transition-transform duration-500">
                   {exp.role}
                 </h3>
-                <div className="flex items-center gap-3 mb-6 text-zinc-500 text-sm">
-                  <span className="font-medium text-zinc-400">{exp.company}</span>
-                  <span className="text-zinc-700">·</span>
-                  <span>{exp.location}</span>
+                <div className="flex flex-col gap-1 mb-6">
+                  <div className="flex items-center gap-3 text-zinc-500 text-sm">
+                    <span className="font-medium text-zinc-400">{exp.company}</span>
+                    <span className="text-zinc-700">·</span>
+                    <span>{exp.location}</span>
+                  </div>
+                  {exp.product && (
+                    <span className="text-xs text-zinc-600 italic">{exp.product}</span>
+                  )}
                 </div>
 
                 {/* Bullets */}
