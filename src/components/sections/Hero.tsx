@@ -4,9 +4,6 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { site } from "@/lib/site";
 
-/* Top-level skill tags shown under the role */
-const TAGS = ["React", "Next.js", "TypeScript", "Node.js", "Full-Stack"];
-
 export function Hero() {
   const sectionRef   = useRef<HTMLElement>(null);
   const indexRef     = useRef<HTMLDivElement>(null);
@@ -14,7 +11,6 @@ export function Hero() {
   const nameRef      = useRef<HTMLDivElement>(null);
   const cursorRef    = useRef<HTMLSpanElement>(null);
   const roleRef      = useRef<HTMLDivElement>(null);
-  const tagsRef      = useRef<HTMLDivElement>(null);
   const taglineRef   = useRef<HTMLParagraphElement>(null);
   const ctaRef       = useRef<HTMLDivElement>(null);
   const bottomBarRef = useRef<HTMLDivElement>(null);
@@ -25,7 +21,6 @@ export function Hero() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       const nameWords = nameRef.current?.querySelectorAll(".hero-word") ?? [];
-      const tagItems  = tagsRef.current?.querySelectorAll(".tag-item") ?? [];
 
       /* ── initial states ── */
       gsap.set(indexRef.current,  { opacity: 0 });
@@ -33,7 +28,6 @@ export function Hero() {
       gsap.set(nameWords,         { yPercent: 115, opacity: 0 });
       gsap.set(cursorRef.current, { opacity: 0 });
       gsap.set(roleRef.current,   { clipPath: "inset(0 100% 0 0)" });
-      gsap.set(tagItems,          { opacity: 0, yPercent: 40 });
       gsap.set(taglineRef.current,{ opacity: 0, yPercent: 16 });
       gsap.set(ctaRef.current,    { opacity: 0, yPercent: 20 });
       gsap.set(lineTopRef.current,{ scaleX: 0, transformOrigin: "left center" });
@@ -69,11 +63,6 @@ export function Hero() {
       tl.to(roleRef.current, {
         clipPath: "inset(0 0% 0 0)", duration: 0.8, ease: "power4.inOut",
       }, "-=1");
-
-      // tag chips stagger
-      tl.to(tagItems, {
-        opacity: 1, yPercent: 0, stagger: 0.07, duration: 0.6, ease: "power3.out",
-      }, "-=0.5");
 
       // tagline
       tl.to(taglineRef.current, { opacity: 1, yPercent: 0, duration: 0.9, ease: "power3.out" }, "-=0.4");
