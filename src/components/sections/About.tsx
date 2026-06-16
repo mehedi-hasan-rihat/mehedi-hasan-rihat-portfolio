@@ -10,139 +10,144 @@ gsap.registerPlugin(ScrollTrigger);
 
 export function About() {
   const sectionRef = useRef<HTMLElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const bioRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
+  const ruleRef    = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLDivElement>(null);
+  const bioRef     = useRef<HTMLDivElement>(null);
+  const imageRef   = useRef<HTMLDivElement>(null);
+  const detailsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Section heading — clip from bottom
-      gsap.set(headingRef.current, { clipPath: "inset(0 0 100% 0)" });
-      gsap.to(headingRef.current, {
-        clipPath: "inset(0 0 0% 0)",
-        duration: 1.4,
-        ease: "power4.inOut",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
+      // Rule sweep
+      gsap.set(ruleRef.current, { scaleX: 0, transformOrigin: "left" });
+      gsap.to(ruleRef.current, {
+        scaleX: 1, duration: 1, ease: "power4.inOut",
+        scrollTrigger: { trigger: sectionRef.current, start: "top 80%" },
       });
 
-      // Bio paragraphs stagger
-      const paragraphs = bioRef.current?.querySelectorAll(".bio-line") || [];
-      gsap.set(paragraphs, { yPercent: 80, clipPath: "inset(0 0 50% 0)" });
-      gsap.to(paragraphs, {
-        yPercent: 0,
-        clipPath: "inset(0 0 0% 0)",
-        stagger: 0.15,
-        duration: 1.2,
-        ease: "power3.out",
-        scrollTrigger: { trigger: bioRef.current, start: "top 75%" },
+      // Heading words stagger up
+      const words = headingRef.current?.querySelectorAll(".about-word") ?? [];
+      gsap.set(words, { yPercent: 110 });
+      gsap.to(words, {
+        yPercent: 0, stagger: 0.08, duration: 1.2, ease: "expo.out",
+        scrollTrigger: { trigger: headingRef.current, start: "top 78%" },
       });
 
-      // Image reveal with diagonal clip
+      // Bio lines
+      const lines = bioRef.current?.querySelectorAll(".bio-line") ?? [];
+      gsap.set(lines, { yPercent: 40, opacity: 0 });
+      gsap.to(lines, {
+        yPercent: 0, opacity: 1, stagger: 0.12, duration: 1, ease: "power3.out",
+        scrollTrigger: { trigger: bioRef.current, start: "top 80%" },
+      });
+
+      // Detail items
+      const dItems = detailsRef.current?.querySelectorAll(".detail-item") ?? [];
+      gsap.set(dItems, { opacity: 0, yPercent: 20 });
+      gsap.to(dItems, {
+        opacity: 1, yPercent: 0, stagger: 0.1, duration: 0.7, ease: "power3.out",
+        scrollTrigger: { trigger: detailsRef.current, start: "top 85%" },
+      });
+
+      // Image — left wipe
       if (imageRef.current) {
-        gsap.set(imageRef.current, { clipPath: "polygon(0 0, 0 0, 0 100%, 0 100%)" });
+        gsap.set(imageRef.current, { clipPath: "inset(0 100% 0 0)" });
         gsap.to(imageRef.current, {
-          clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
-          duration: 1.6,
-          ease: "power4.inOut",
-          scrollTrigger: { trigger: imageRef.current, start: "top 75%" },
+          clipPath: "inset(0 0% 0 0)", duration: 1.4, ease: "power4.inOut",
+          scrollTrigger: { trigger: imageRef.current, start: "top 78%" },
         });
       }
     });
-
     return () => ctx.revert();
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      id="about"
-      className="relative px-6 md:px-16 lg:px-24 py-32 md:py-40"
-    >
-      <div className="max-w-7xl mx-auto">
-        {/* Section label */}
-        <div className="mb-4">
-          <span className="text-[11px] text-zinc-600 uppercase tracking-[0.3em] font-mono">
-            01 / About
-          </span>
-        </div>
+    <section ref={sectionRef} id="about" className="relative px-6 md:px-16 lg:px-24 py-28 md:py-36">
 
-        <div className="grid lg:grid-cols-12 gap-16 lg:gap-12">
-          {/* Left — Heading + Bio */}
-          <div className="lg:col-span-7">
-            <div className="overflow-hidden mb-12">
-              <h2
-                ref={headingRef}
-                className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter text-white leading-[0.9]"
-              >
-                Building
-                <br />
-                <span className="text-zinc-500">software</span>
-              </h2>
-            </div>
+      {/* Rule */}
+      <div ref={ruleRef} className="h-px w-full bg-zinc-800 mb-10" />
 
-            <div ref={bioRef} className="space-y-6 max-w-2xl">
-              <p className="bio-line text-xl md:text-2xl text-zinc-300 leading-relaxed font-light">
-                {site.bio}
-              </p>
-              <p className="bio-line text-base text-zinc-500 leading-relaxed">
-                Based in <span className="text-zinc-300">{site.location}</span>. Open to
-                junior roles, internships, and freelance opportunities.
-              </p>
-            </div>
+      {/* Label */}
+      <p className="text-[10px] font-mono uppercase tracking-[0.35em] text-zinc-600 mb-10">
+        01 / About
+      </p>
+
+      <div className="grid lg:grid-cols-12 gap-16 lg:gap-12 items-start">
+
+        {/* LEFT */}
+        <div className="lg:col-span-7 space-y-10">
+
+          {/* Heading */}
+          <div ref={headingRef} className="flex flex-wrap gap-x-5 gap-y-0">
+            {["Building", "software"].map((word, i) => (
+              <div key={i} className="overflow-hidden">
+                <span
+                  className={`about-word block font-black uppercase leading-[0.85] tracking-[-0.04em] will-change-transform ${i === 1 ? "text-zinc-500" : "text-white"}`}
+                  style={{ fontSize: "clamp(3rem, 8vw, 7.5rem)" }}
+                >
+                  {word}
+                </span>
+              </div>
+            ))}
           </div>
 
-          {/* Right — Profile Image (Hero card style) */}
-          <div className="lg:col-span-5 flex items-center">
-            <div
-              ref={imageRef}
-              className="relative w-full aspect-4/5 overflow-hidden group"
-              style={{ borderRadius: "4px" }}
-            >
-              <Image
-                src={site.avatar}
-                alt={site.name}
-                fill
-                className="object-cover object-top scale-105 group-hover:scale-100 transition-transform duration-1000 ease-out"
-              />
+          {/* Bio */}
+          <div ref={bioRef} className="space-y-5 max-w-2xl">
+            <p className="bio-line text-lg md:text-xl text-zinc-300 leading-relaxed font-light">
+              {site.bio}
+            </p>
+            <p className="bio-line text-sm text-zinc-500 leading-relaxed">
+              Based in <span className="text-zinc-300">{site.location}</span>. Open to junior roles, internships, and freelance opportunities.
+            </p>
+          </div>
 
-              {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a] via-[#0a0a0a]/10 to-transparent opacity-70" />
+          {/* Detail row */}
+          <div ref={detailsRef} className="grid grid-cols-2 sm:grid-cols-3 gap-6 pt-4 border-t border-zinc-800">
+            {[
+              { label: "Role",       value: site.role },
+              { label: "Location",   value: site.location },
+              { label: "Status",     value: site.availability },
+            ].map(({ label, value }) => (
+              <div key={label} className="detail-item">
+                <p className="text-[10px] font-mono uppercase tracking-widest text-zinc-600 mb-1">{label}</p>
+                <p className="text-sm text-zinc-300">{value}</p>
+              </div>
+            ))}
+          </div>
+        </div>
 
-              {/* Border frame */}
-              <div className="absolute inset-0 border border-zinc-700/50 group-hover:border-zinc-500/70 transition-colors duration-700" />
+        {/* RIGHT — photo */}
+        <div className="lg:col-span-5 flex items-start">
+          <div
+            ref={imageRef}
+            className="relative w-full aspect-4/5 overflow-hidden group"
+            style={{ borderRadius: "2px" }}
+          >
+            <Image
+              src={site.avatar}
+              alt={site.name}
+              fill
+              className="object-cover object-top scale-105 group-hover:scale-100 transition-transform duration-1000 ease-out"
+            />
+            <div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a] via-[#0a0a0a]/10 to-transparent opacity-70" />
+            <div className="absolute inset-0 border border-zinc-700/40 group-hover:border-zinc-500/60 transition-colors duration-700" />
 
-              {/* Bottom label */}
-              <div className="absolute bottom-0 left-0 right-0 p-5 border-t border-zinc-800/60">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-[10px] text-zinc-400 uppercase tracking-[0.2em] font-mono leading-none mb-1">
-                      {site.role}
-                    </div>
-                    <div className="text-[10px] text-zinc-600 uppercase tracking-[0.15em] font-mono leading-none">
-                      {site.location}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="text-[9px] text-zinc-500 uppercase tracking-wider font-mono">
-                      Available
-                    </span>
-                  </div>
+            <div className="absolute bottom-0 left-0 right-0 p-5 border-t border-zinc-800/60">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-[10px] text-zinc-400 uppercase tracking-[0.2em] font-mono leading-none mb-1">{site.role}</p>
+                  <p className="text-[10px] text-zinc-600 uppercase tracking-[0.15em] font-mono leading-none">{site.location}</p>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-[9px] text-zinc-500 uppercase tracking-wider font-mono">Available</span>
                 </div>
               </div>
-
-              {/* Top-right corner bracket */}
-              <div className="absolute top-4 right-4">
-                <div className="w-6 h-6 border-t border-r border-zinc-600" />
-              </div>
-              {/* Bottom-left corner bracket */}
-              <div className="absolute bottom-16 left-4">
-                <div className="w-6 h-6 border-b border-l border-zinc-600" />
-              </div>
             </div>
+            <div className="absolute top-4 right-4"><div className="w-5 h-5 border-t border-r border-zinc-600" /></div>
+            <div className="absolute bottom-16 left-4"><div className="w-5 h-5 border-b border-l border-zinc-600" /></div>
           </div>
         </div>
-
 
       </div>
     </section>

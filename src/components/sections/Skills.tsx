@@ -7,94 +7,94 @@ import { site } from "@/lib/site";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Group skills by category
+const grouped = site.skills.reduce<Record<string, string[]>>((acc, s) => {
+  (acc[s.category] ??= []).push(s.name);
+  return acc;
+}, {});
+
 export function Skills() {
   const sectionRef = useRef<HTMLElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
+  const ruleRef    = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLDivElement>(null);
+  const listRef    = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Heading reveal
-      gsap.set(headingRef.current, { clipPath: "inset(0 0 100% 0)" });
-      gsap.to(headingRef.current, {
-        clipPath: "inset(0 0 0% 0)",
-        duration: 1.2,
-        ease: "power4.inOut",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
+      gsap.set(ruleRef.current, { scaleX: 0, transformOrigin: "left" });
+      gsap.to(ruleRef.current, {
+        scaleX: 1, duration: 1, ease: "power4.inOut",
+        scrollTrigger: { trigger: sectionRef.current, start: "top 80%" },
       });
 
-      // Skill items — stagger in with scale and clip
-      const items = gridRef.current?.querySelectorAll(".skill-pill") || [];
-      gsap.set(items, { scale: 0.8, clipPath: "inset(20%)" });
-      gsap.to(items, {
-        scale: 1,
-        clipPath: "inset(0%)",
-        stagger: { amount: 0.8, grid: "auto", from: "start" },
-        duration: 0.8,
-        ease: "back.out(1.4)",
-        scrollTrigger: { trigger: gridRef.current, start: "top 80%" },
+      const words = headingRef.current?.querySelectorAll(".sk-word") ?? [];
+      gsap.set(words, { yPercent: 110 });
+      gsap.to(words, {
+        yPercent: 0, stagger: 0.08, duration: 1.1, ease: "expo.out",
+        scrollTrigger: { trigger: headingRef.current, start: "top 78%" },
+      });
+
+      const rows = listRef.current?.querySelectorAll(".skill-row") ?? [];
+      gsap.set(rows, { opacity: 0, yPercent: 20 });
+      gsap.to(rows, {
+        opacity: 1, yPercent: 0, stagger: 0.09, duration: 0.8, ease: "power3.out",
+        scrollTrigger: { trigger: listRef.current, start: "top 80%" },
       });
     });
-
     return () => ctx.revert();
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      id="skills"
-      className="relative px-6 md:px-16 lg:px-24 py-32 md:py-40"
-    >
-      <div className="max-w-7xl mx-auto">
-        {/* Section label */}
-        <div className="mb-4">
-          <span className="text-[11px] text-zinc-600 uppercase tracking-[0.3em] font-mono">
-            02 / Skills
-          </span>
-        </div>
+    <section ref={sectionRef} id="skills" className="relative px-6 md:px-16 lg:px-24 py-28 md:py-36">
 
-        <div className="grid lg:grid-cols-12 gap-16">
-          {/* Heading */}
-          <div className="lg:col-span-5">
-            <div className="overflow-hidden mb-8">
-              <h2
-                ref={headingRef}
-                className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-white leading-[0.9]"
-              >
-                Tools &
-                <br />
-                <span className="text-zinc-500">Stack</span>
-              </h2>
-            </div>
-            <p className="text-base text-zinc-500 leading-relaxed max-w-md">
-              Technologies I&apos;ve been learning and using to build software. From web UIs to backends and databases.
-            </p>
-          </div>
+      <div ref={ruleRef} className="h-px w-full bg-zinc-800 mb-10" />
 
-          {/* Skills grid */}
-          <div className="lg:col-span-7">
-            <div ref={gridRef} className="flex flex-wrap gap-3">
-              {site.skills.map((skill, index) => (
-                <div
-                  key={index}
-                  className="skill-pill group relative px-6 py-4 border border-zinc-800 bg-zinc-900/40 backdrop-blur-sm hover:border-zinc-500 hover:bg-zinc-800/60 transition-all duration-500"
+      <p className="text-[10px] font-mono uppercase tracking-[0.35em] text-zinc-600 mb-10">
+        02 / Skills
+      </p>
+
+      <div className="grid lg:grid-cols-12 gap-16">
+
+        {/* Heading + description — RIGHT side */}
+        <div className="lg:col-start-9 lg:col-span-4 lg:text-right">
+          <div ref={headingRef} className="mb-8">
+            {["Tools &", "Stack"].map((word, i) => (
+              <div key={i} className="overflow-hidden">
+                <span
+                  className={`sk-word block font-black uppercase leading-[0.85] tracking-[-0.03em] will-change-transform ${i === 1 ? "text-zinc-500" : "text-white"}`}
+                  style={{ fontSize: "clamp(2.5rem, 6vw, 5.5rem)" }}
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="text-[10px] text-zinc-700 font-mono">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <span className="text-base text-zinc-200 font-medium group-hover:text-white transition-colors duration-300">
-                      {skill.name}
-                    </span>
-                  </div>
-                  <div className="absolute top-2 right-3 text-[9px] text-zinc-700 uppercase tracking-wider">
-                    {skill.category}
-                  </div>
-                </div>
-              ))}
-            </div>
+                  {word}
+                </span>
+              </div>
+            ))}
           </div>
+          <p className="text-sm text-zinc-500 leading-relaxed">
+            Technologies I use to build, ship, and maintain software — front to back.
+          </p>
         </div>
+
+        {/* Grouped skill list — spans full width below heading on lg */}
+        <div ref={listRef} className="lg:col-span-12 space-y-0 divide-y divide-zinc-800/60">
+          {Object.entries(grouped).map(([category, skills]) => (
+            <div key={category} className="skill-row flex flex-col sm:flex-row sm:items-start gap-4 py-5">
+              <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-zinc-600 sm:w-36 shrink-0 pt-0.5">
+                {category}
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {skills.map((name) => (
+                  <span
+                    key={name}
+                    className="px-3 py-1.5 border border-zinc-800 text-sm text-zinc-300 font-medium hover:border-zinc-500 hover:text-white transition-all duration-300"
+                  >
+                    {name}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
       </div>
     </section>
   );
