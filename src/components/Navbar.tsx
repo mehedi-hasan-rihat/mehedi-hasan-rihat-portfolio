@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LogoAnimated } from "./Logo";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,11 +13,13 @@ interface NavbarProps {
   name: string;
 }
 
-export function Navbar({ name }: NavbarProps) {
+export function Navbar({ }: NavbarProps) {
   const navRef = useRef<HTMLElement>(null);
   const logoRef = useRef<HTMLAnchorElement>(null);
   const linksRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+  const isResume = pathname === "/resume";
 
   useEffect(() => {
     // Entrance animation
@@ -49,34 +53,39 @@ export function Navbar({ name }: NavbarProps) {
         WebkitBackdropFilter: scrolled ? "blur(12px)" : "none",
       }}
     >
-      <a
+      <Link
         ref={logoRef}
         href="/"
         className="block w-10 h-10 hover:scale-110 transition-transform duration-300"
       >
         <LogoAnimated className="w-full h-full" />
-      </a>
+      </Link>
 
       <div ref={linksRef} className="flex items-center gap-8">
+        {!isResume && (
+          <>
+
+            <div className="overflow-hidden">
+              <a
+                href="#about"
+                className="nav-link block text-[11px] text-zinc-500 uppercase tracking-wider hover:text-white transition-colors duration-300"
+              >
+                About
+              </a>
+            </div>
+          </>
+        )}
         <div className="overflow-hidden">
-          <a
-            href="#projects"
+          <Link
+            href={isResume ? "/" : "/resume"}
             className="nav-link block text-[11px] text-zinc-500 uppercase tracking-wider hover:text-white transition-colors duration-300"
           >
-            Work
-          </a>
+            {isResume ? "Home" : "Resume"}
+          </Link>
         </div>
         <div className="overflow-hidden">
           <a
-            href="#about"
-            className="nav-link block text-[11px] text-zinc-500 uppercase tracking-wider hover:text-white transition-colors duration-300"
-          >
-            About
-          </a>
-        </div>
-        <div className="overflow-hidden">
-          <a
-            href="#connect"
+            href={isResume ? "/#connect" : "#connect"}
             className="nav-link block text-[11px] text-zinc-500 uppercase tracking-wider hover:text-white transition-colors duration-300 border border-zinc-700 px-4 py-2 hover:border-zinc-400"
           >
             Contact

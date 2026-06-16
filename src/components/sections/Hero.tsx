@@ -168,10 +168,19 @@ export function Hero() {
                 </svg>
               </a>
               <a
-                href="#connect"
-                className="inline-flex items-center gap-3 px-8 py-4 border border-zinc-700 text-white font-semibold text-sm uppercase tracking-wider hover:border-zinc-400 transition-colors duration-300"
+                href={site.resumePdfHref ?? "/resume"}
+                download={!!site.resumePdfHref}
+                className="group inline-flex items-center gap-3 px-8 py-4 border border-zinc-700 text-white font-semibold text-sm uppercase tracking-wider hover:border-zinc-400 transition-colors duration-300"
               >
-                Let&apos;s Talk
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                <span>Download Resume</span>
               </a>
             </div>
           </div>

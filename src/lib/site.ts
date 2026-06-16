@@ -26,7 +26,7 @@ export const site = {
     "Building reliable software. Web apps, APIs, clean code and a passion for learning.",
   bio: "I'm a software developer who enjoys building things end-to-end. From UI to backend, I like writing clean readable code and solving real problems. Always learning, always improving.",
   location: "Dhaka, Bangladesh",
-  email: "mehedi@example.com",
+  email: "mehedi6381@gmail.com",
   availability: "Open to opportunities",
   avatar: "/assets/mehedi.jpeg",
   resumePageHref: "/resume",

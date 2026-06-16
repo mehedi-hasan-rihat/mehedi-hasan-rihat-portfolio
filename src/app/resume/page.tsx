@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { site, getDuration } from "@/lib/site";
-import Link from "next/link";
+import { Navbar } from "@/components/Navbar";
 
 export default function ResumePage() {
   const pageRef = useRef<HTMLElement>(null);
@@ -39,30 +39,16 @@ export default function ResumePage() {
   }, []);
 
   return (
-    <main ref={pageRef} className="min-h-screen pt-28 pb-20 px-6 md:px-16 lg:px-24">
+    <>
+      <Navbar name={site.name} />
+      <main ref={pageRef} className="min-h-screen pt-28 pb-20 px-6 md:px-16 lg:px-24">
       <div className="max-w-4xl mx-auto">
-        {/* Back link */}
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors duration-300 text-sm mb-12 group"
-        >
-          <svg
-            className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform duration-300"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L3 12m0 0l4-5m-4 5h18" />
-          </svg>
-          <span className="uppercase tracking-wider text-xs">Back to Portfolio</span>
-        </Link>
-
         {/* Header */}
         <div className="resume-header mb-16">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-8">
             <div>
               <span className="text-[11px] text-zinc-600 uppercase tracking-[0.3em] font-mono block mb-3">
-                Resume
+                CV / Resume
               </span>
               <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white uppercase">
                 {site.name}
@@ -214,9 +200,15 @@ export default function ResumePage() {
                 <span>Download PDF</span>
               </a>
             ) : (
-              <div className="px-6 py-4 border border-zinc-800 bg-zinc-900/30 text-sm text-zinc-500">
-                PDF resume not configured yet — set <code className="text-zinc-400 font-mono">resumePdfHref</code> in site.ts
-              </div>
+              <a
+                href="/resume"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-white text-black font-semibold text-sm uppercase tracking-wider hover:bg-zinc-200 transition-colors duration-300 opacity-50 cursor-not-allowed pointer-events-none"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                <span>Download PDF</span>
+              </a>
             )}
             <a
               href={`mailto:${site.email}`}
@@ -228,5 +220,6 @@ export default function ResumePage() {
         </div>
       </div>
     </main>
+    </>
   );
 }
