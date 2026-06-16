@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { site } from "@/lib/site";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -92,22 +93,23 @@ export function About() {
 
           {/* Right — Profile Image */}
           <div className="lg:col-span-5 flex items-center">
-            <div ref={imageRef} className="relative w-full aspect-[4/5] bg-zinc-900 overflow-hidden group">
-              <img
-                src={site.avatar}
+            <div ref={imageRef} className="relative w-full aspect-4/5 bg-zinc-900 overflow-hidden group">
+              <Image
+                src={site.avatar_about}
                 alt={site.name}
-                className="w-full h-full object-cover object-top grayscale-[30%] group-hover:grayscale-0 transition-all duration-1000"
+                fill
+                className="object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
               />
-              {/* Subtle overlay gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/60 via-transparent to-transparent" />
+              {/* Bottom gradient — ensures text is always readable */}
+              <div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a] via-[#0a0a0a]/30 to-transparent" />
               {/* Border frame */}
-              <div className="absolute inset-0 border border-zinc-700/40 group-hover:border-zinc-500/60 transition-colors duration-700" />
+              <div className="absolute inset-0 border border-zinc-700/50 group-hover:border-zinc-500/70 transition-colors duration-700" />
               {/* Corner accent */}
-              <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end">
-                <span className="text-[10px] text-zinc-500 uppercase tracking-wider font-mono">
+              <div className="absolute bottom-5 left-5 right-5 flex justify-between items-end">
+                <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-mono">
                   {site.location}
                 </span>
-                <span className="text-[10px] text-zinc-600 font-mono">
+                <span className="text-[10px] text-zinc-500 font-mono">
                   {site.initials}
                 </span>
               </div>

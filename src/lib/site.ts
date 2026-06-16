@@ -29,6 +29,7 @@ export const site = {
   email: "mehedi6381@gmail.com",
   availability: "Open to opportunities",
   avatar: "/assets/mehedi.jpeg",
+  avatar_about: "/assets/mehedi_afa.jpeg",
   resumePageHref: "/resume",
   resumePdfHref: null as string | null,
   socials: [
