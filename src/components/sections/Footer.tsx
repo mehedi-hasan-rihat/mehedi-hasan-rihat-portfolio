@@ -27,27 +27,28 @@ export function Footer() {
     const ctx = gsap.context(() => {
       /* ── big heading ── */
       const words = headingRef.current?.querySelectorAll(".foot-word") ?? [];
-      gsap.set(words, { yPercent: 110 });
+      gsap.set(words, { yPercent: 110, opacity: 0 });
       gsap.to(words, {
         yPercent: 0,
+        opacity: 1,
         stagger: 0.1,
         duration: 1.2,
         ease: "expo.out",
-        scrollTrigger: { trigger: headingRef.current, start: "top 88%" },
+        scrollTrigger: { trigger: headingRef.current, start: "top 95%" },
       });
 
       /* ── email ── */
       gsap.set(emailRef.current, { opacity: 0, yPercent: 20 });
       gsap.to(emailRef.current, {
         opacity: 1, yPercent: 0, duration: 0.9, ease: "power3.out",
-        scrollTrigger: { trigger: emailRef.current, start: "top 90%" },
+        scrollTrigger: { trigger: emailRef.current, start: "top 98%" },
       });
 
       /* ── rule sweep ── */
       gsap.set(ruleRef.current, { scaleX: 0, transformOrigin: "left center" });
       gsap.to(ruleRef.current, {
         scaleX: 1, duration: 1, ease: "power4.inOut",
-        scrollTrigger: { trigger: ruleRef.current, start: "top 95%" },
+        scrollTrigger: { trigger: ruleRef.current, start: "top 100%" },
       });
 
       /* ── bottom items ── */
@@ -56,7 +57,7 @@ export function Footer() {
       gsap.to(items, {
         opacity: 1, yPercent: 0,
         stagger: 0.08, duration: 0.7, ease: "power3.out",
-        scrollTrigger: { trigger: ruleRef.current, start: "top 92%" },
+        scrollTrigger: { trigger: ruleRef.current, start: "top 100%" },
       });
     });
 
@@ -171,19 +172,19 @@ export function Footer() {
 
       {/* ── Bottom strip ────────────────────────────────────────── */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div className="flex items-center gap-6">
-          <span className="foot-item text-[10px] font-mono uppercase tracking-widest text-zinc-700">
+        <div className="flex items-center gap-3">
+          <span className="foot-item text-[10px] font-mono uppercase tracking-widest text-zinc-500">
             {site.name}
           </span>
-          <span className="foot-item w-1 h-1 rounded-full bg-zinc-800 hidden md:inline-block" />
-          <span className="foot-item text-[10px] font-mono uppercase tracking-widest text-zinc-800">
+          <span className="foot-item text-zinc-700">·</span>
+          <span className="foot-item text-[10px] font-mono uppercase tracking-widest text-zinc-600">
             {site.location}
           </span>
         </div>
 
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="foot-item group flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-zinc-700 hover:text-zinc-400 transition-colors duration-300"
+          className="foot-item group flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-zinc-500 hover:text-white transition-colors duration-300"
         >
           Back to top
           <svg
@@ -194,7 +195,7 @@ export function Footer() {
           </svg>
         </button>
 
-        <span className="foot-item text-[10px] font-mono uppercase tracking-widest text-zinc-800">
+        <span className="foot-item text-[10px] font-mono uppercase tracking-widest text-zinc-600">
           © {new Date().getFullYear()} — Designed & Built by {site.initials}
         </span>
       </div>

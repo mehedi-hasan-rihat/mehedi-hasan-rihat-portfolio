@@ -38,17 +38,32 @@ export const site = {
     { label: "X", href: "https://x.com/your-handle", icon: "x" },
   ],
   skills: [
-    { name: "React", category: "Frontend" },
-    { name: "Next.js", category: "Frontend" },
-    { name: "TypeScript", category: "Language" },
-    { name: "Node.js", category: "Backend" },
-    { name: "Express", category: "Backend" },
-    { name: "MongoDB", category: "Database" },
-    { name: "MySql", category: "Database" },
-    { name: "PostgreSQL", category: "Database" },
-    { name: "Prisma", category: "ORM" },
-    { name: "Tailwind CSS", category: "Styling" },
-    { name: "Docker", category: "DevOps" },
+    // Frontend
+    { name: "React",          category: "Frontend" },
+    { name: "Next.js",        category: "Frontend" },
+    { name: "Tailwind CSS",   category: "Frontend" },
+    { name: "HTML & CSS",     category: "Frontend" },
+    { name: "Framer Motion",  category: "Frontend" },
+    { name: "GSAP",           category: "Frontend" },
+    // Language
+    { name: "TypeScript",     category: "Language" },
+    { name: "JavaScript",     category: "Language" },
+    { name: "Python",         category: "Language" },
+    // Backend
+    { name: "Node.js",        category: "Backend" },
+    { name: "Express",        category: "Backend" },
+    { name: "REST APIs",      category: "Backend" },
+    // Database
+    { name: "MongoDB",        category: "Database" },
+    { name: "MySQL",          category: "Database" },
+    { name: "PostgreSQL",     category: "Database" },
+    { name: "Prisma",         category: "Database" },
+    // Tooling
+    { name: "Git & GitHub",   category: "Tooling" },
+    { name: "Docker",         category: "Tooling" },
+    { name: "Playwright",     category: "Tooling" },
+    { name: "Storybook",      category: "Tooling" },
+    { name: "Vite",           category: "Tooling" },
   ],
   projects: [
     {

@@ -6,43 +6,43 @@ import { site } from "@/lib/site";
 
 export function Hero() {
   const sectionRef   = useRef<HTMLElement>(null);
-  const indexRef     = useRef<HTMLDivElement>(null);
+  const watermarkRef = useRef<HTMLDivElement>(null);
   const badgeRef     = useRef<HTMLDivElement>(null);
+  const lineTopRef   = useRef<HTMLDivElement>(null);
   const nameRef      = useRef<HTMLDivElement>(null);
   const cursorRef    = useRef<HTMLSpanElement>(null);
   const roleRef      = useRef<HTMLDivElement>(null);
   const taglineRef   = useRef<HTMLParagraphElement>(null);
   const ctaRef       = useRef<HTMLDivElement>(null);
+  const lineBotRef   = useRef<HTMLDivElement>(null);
   const bottomBarRef = useRef<HTMLDivElement>(null);
   const scrollRef    = useRef<HTMLDivElement>(null);
-  const lineTopRef   = useRef<HTMLDivElement>(null);
-  const lineBotRef   = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       const nameWords = nameRef.current?.querySelectorAll(".hero-word") ?? [];
 
       /* ── initial states ── */
-      gsap.set(indexRef.current,  { opacity: 0 });
-      gsap.set(badgeRef.current,  { opacity: 0, yPercent: 20 });
-      gsap.set(nameWords,         { yPercent: 115, opacity: 0 });
-      gsap.set(cursorRef.current, { opacity: 0 });
-      gsap.set(roleRef.current,   { clipPath: "inset(0 100% 0 0)" });
-      gsap.set(taglineRef.current,{ opacity: 0, yPercent: 16 });
-      gsap.set(ctaRef.current,    { opacity: 0, yPercent: 20 });
-      gsap.set(lineTopRef.current,{ scaleX: 0, transformOrigin: "left center" });
-      gsap.set(lineBotRef.current,{ scaleX: 0, transformOrigin: "left center" });
+      gsap.set(watermarkRef.current, { opacity: 0 });
+      gsap.set(badgeRef.current,     { opacity: 0, yPercent: 20 });
+      gsap.set(lineTopRef.current,   { scaleX: 0, transformOrigin: "left center" });
+      gsap.set(nameWords,            { yPercent: 115, opacity: 0 });
+      gsap.set(cursorRef.current,    { opacity: 0 });
+      gsap.set(roleRef.current,      { clipPath: "inset(0 100% 0 0)" });
+      gsap.set(taglineRef.current,   { opacity: 0, yPercent: 16 });
+      gsap.set(ctaRef.current,       { opacity: 0, yPercent: 20 });
+      gsap.set(lineBotRef.current,   { scaleX: 0, transformOrigin: "left center" });
       gsap.set(bottomBarRef.current, { opacity: 0, yPercent: 10 });
-      gsap.set(scrollRef.current, { opacity: 0, yPercent: 20 });
+      gsap.set(scrollRef.current,    { opacity: 0, yPercent: 20 });
 
       /* ── master timeline ── */
       const tl = gsap.timeline({ delay: 5.5, defaults: { ease: "expo.out" } });
 
-      // index number ghosts in
-      tl.to(indexRef.current, { opacity: 1, duration: 1.2, ease: "power2.out" });
+      // watermark ghosts in
+      tl.to(watermarkRef.current, { opacity: 1, duration: 1.4, ease: "power2.out" });
 
       // top line sweeps
-      tl.to(lineTopRef.current, { scaleX: 1, duration: 0.7, ease: "power4.inOut" }, "-=0.8");
+      tl.to(lineTopRef.current, { scaleX: 1, duration: 0.7, ease: "power4.inOut" }, "-=0.9");
 
       // badge
       tl.to(badgeRef.current, { opacity: 1, yPercent: 0, duration: 0.7, ease: "power3.out" }, "-=0.4");
@@ -71,7 +71,7 @@ export function Hero() {
       tl.to(ctaRef.current, { opacity: 1, yPercent: 0, duration: 0.8, ease: "power3.out" }, "-=0.5");
 
       // bottom line + bar
-      tl.to(lineBotRef.current, { scaleX: 1, duration: 0.7, ease: "power4.inOut" }, "-=0.4");
+      tl.to(lineBotRef.current,   { scaleX: 1, duration: 0.7, ease: "power4.inOut" }, "-=0.4");
       tl.to(bottomBarRef.current, { opacity: 1, yPercent: 0, duration: 0.7, ease: "power3.out" }, "-=0.4");
 
       // scroll
@@ -89,17 +89,18 @@ export function Hero() {
       ref={sectionRef}
       className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 pt-20 pb-24 overflow-hidden"
     >
-      {/* ── Background index number ─────────────────────────────── */}
+      {/* ── Numeric watermark ───────────────────────────────────── */}
       <div
-        ref={indexRef}
-        className="absolute right-6 md:right-16 lg:right-24 top-1/2 -translate-y-1/2 pointer-events-none select-none opacity-0"
+        ref={watermarkRef}
+        className="absolute right-6 md:right-16 lg:right-24 top-1/2 -translate-y-1/2 pointer-events-none select-none"
         aria-hidden="true"
+        style={{ opacity: 0 }}
       >
         <span
           className="font-black text-zinc-900 leading-none tracking-tighter"
           style={{ fontSize: "clamp(8rem, 22vw, 22rem)" }}
         >
-          01
+          {new Date().getFullYear()}
         </span>
       </div>
 
@@ -109,7 +110,7 @@ export function Hero() {
       <div className="relative z-10 w-full">
 
         {/* ── Status badge ────────────────────────────────────────── */}
-        <div ref={badgeRef} className="mb-8 opacity-0">
+        <div ref={badgeRef} className="mb-8" style={{ opacity: 0 }}>
           <span className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.35em] text-zinc-500">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             {site.availability}
@@ -126,6 +127,7 @@ export function Hero() {
                 fontSize: "clamp(3.8rem, 12vw, 11rem)",
                 WebkitTextStroke: "1.5px rgba(255,255,255,0.15)",
                 color: "transparent",
+                opacity: 0,
               }}
             >
               {firstName}
@@ -135,13 +137,13 @@ export function Hero() {
           <div className="overflow-hidden">
             <h1
               className="hero-word font-black uppercase leading-[0.82] tracking-[-0.04em] text-white will-change-transform"
-              style={{ fontSize: "clamp(3.8rem, 12vw, 11rem)" }}
+              style={{ fontSize: "clamp(3.8rem, 12vw, 11rem)", opacity: 0 }}
             >
               {lastName}
               <span
                 ref={cursorRef}
-                className="inline-block align-baseline ml-2 w-[3px] bg-white opacity-0"
-                style={{ height: "clamp(3rem, 9.5vw, 8.8rem)" }}
+                className="inline-block align-baseline ml-2 w-[3px] bg-white"
+                style={{ height: "clamp(3rem, 9.5vw, 8.8rem)", opacity: 0 }}
                 aria-hidden="true"
               />
             </h1>
@@ -159,19 +161,19 @@ export function Hero() {
           </p>
         </div>
 
-
         {/* ── Tagline ─────────────────────────────────────────────── */}
         <p
           ref={taglineRef}
-          className="max-w-lg text-base md:text-lg text-zinc-500 leading-relaxed mb-10 opacity-0"
+          className="max-w-lg text-base md:text-lg text-zinc-500 leading-relaxed mb-10"
+          style={{ opacity: 0 }}
         >
           {site.tagline}
         </p>
 
         {/* ── CTAs ────────────────────────────────────────────────── */}
-        <div ref={ctaRef} className="flex flex-wrap items-center gap-4 opacity-0">
+        <div ref={ctaRef} className="flex flex-wrap items-center gap-4" style={{ opacity: 0 }}>
           <a
-            href="#projects"
+            href="#about"
             className="group inline-flex items-center gap-3 px-7 py-3.5 bg-white text-black text-sm font-semibold uppercase tracking-wider hover:bg-zinc-100 transition-colors duration-300"
           >
             View Work
@@ -196,7 +198,7 @@ export function Hero() {
       <div ref={lineBotRef} className="h-px w-full bg-zinc-800 mt-12" />
 
       {/* ── Bottom bar ──────────────────────────────────────────── */}
-      <div ref={bottomBarRef} className="mt-4 flex items-center justify-between opacity-0">
+      <div ref={bottomBarRef} className="mt-4 flex items-center justify-between" style={{ opacity: 0 }}>
         <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-zinc-700">
           {site.location}
         </span>
@@ -213,13 +215,13 @@ export function Hero() {
             </a>
           ))}
         </div>
-
       </div>
 
       {/* ── Scroll indicator ────────────────────────────────────── */}
       <div
         ref={scrollRef}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-0"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        style={{ opacity: 0 }}
       >
         <span className="text-[9px] font-mono uppercase tracking-[0.4em] text-zinc-700">Scroll</span>
         <div className="flex flex-col items-center gap-0.5">
