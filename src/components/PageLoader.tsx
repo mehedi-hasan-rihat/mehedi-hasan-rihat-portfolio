@@ -20,15 +20,11 @@ export function PageLoader({ onComplete }: { onComplete?: () => void }) {
       const letters = lettersRef.current?.querySelectorAll(".loader-letter") || [];
       const tl = gsap.timeline();
 
-      // ── Initial states ────────────────────────────────────────────────
-      gsap.set(letters, { yPercent: 115, opacity: 0 });
-      gsap.set(roleRef.current, { opacity: 0, yPercent: 20 });
-      gsap.set(counterRef.current, { opacity: 0 });
-      gsap.set(barTrackRef.current, { opacity: 0, scaleX: 0.4 });
-      gsap.set(barFillRef.current, { scaleX: 0 });
-      gsap.set([labelLeftRef.current, labelRightRef.current], { opacity: 0 });
-
       // ── Phase 1: name letters drop in ────────────────────────────────
+      gsap.set(letters, { yPercent: 115 });
+      gsap.set(roleRef.current, { yPercent: 20 });
+      gsap.set(barTrackRef.current, { scaleX: 0.4 });
+      gsap.set(barFillRef.current, { scaleX: 0 });
       tl.to(letters, {
         yPercent: 0,
         opacity: 1,
@@ -69,8 +65,7 @@ export function PageLoader({ onComplete }: { onComplete?: () => void }) {
           ease: "power2.inOut",
           onUpdate: () => {
             if (counterRef.current) {
-              counterRef.current.textContent =
-                String(Math.round(obj.val)).padStart(3, "0");
+              counterRef.current.textContent = `${Math.round(obj.val)}%`;
             }
           },
         },
@@ -144,7 +139,7 @@ export function PageLoader({ onComplete }: { onComplete?: () => void }) {
             <span
               key={i}
               className="loader-letter font-black uppercase text-white leading-none tracking-[-0.04em]"
-              style={{ fontSize: "clamp(4rem, 14vw, 11rem)" }}
+              style={{ fontSize: "clamp(4rem, 14vw, 11rem)", opacity: 0 }}
             >
               {letter}
             </span>
@@ -163,6 +158,7 @@ export function PageLoader({ onComplete }: { onComplete?: () => void }) {
         <span
           ref={roleRef}
           className="text-[11px] text-zinc-500 uppercase tracking-[0.45em] font-mono"
+          style={{ opacity: 0 }}
         >
           Software Developer
         </span>
@@ -172,6 +168,7 @@ export function PageLoader({ onComplete }: { onComplete?: () => void }) {
           <div
             ref={barTrackRef}
             className="relative w-full h-px bg-zinc-800 overflow-hidden origin-center"
+            style={{ opacity: 0 }}
           >
             <div
               ref={barFillRef}
@@ -184,6 +181,7 @@ export function PageLoader({ onComplete }: { onComplete?: () => void }) {
             <span
               ref={labelLeftRef}
               className="text-[10px] text-zinc-700 uppercase tracking-[0.35em] font-mono"
+              style={{ opacity: 0 }}
             >
               Loading
             </span>
@@ -192,14 +190,15 @@ export function PageLoader({ onComplete }: { onComplete?: () => void }) {
             <div
               ref={counterRef}
               className="font-black text-white tabular-nums leading-none tracking-[-0.04em]"
-              style={{ fontSize: "clamp(2rem, 6vw, 4rem)" }}
+              style={{ fontSize: "clamp(2rem, 6vw, 4rem)", opacity: 0 }}
             >
-              000
+              0%
             </div>
 
             <span
               ref={labelRightRef}
               className="text-[10px] text-zinc-700 uppercase tracking-[0.35em] font-mono"
+              style={{ opacity: 0 }}
             >
               Portfolio
             </span>

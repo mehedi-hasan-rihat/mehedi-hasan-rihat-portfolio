@@ -164,7 +164,7 @@ export function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 pt-20 pb-20 overflow-hidden"
+      className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 pt-10 pb-20 overflow-hidden"
     >
       {/* Subtle radial glow */}
       <div
