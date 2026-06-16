@@ -2,10 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { site } from "@/lib/site";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const NAV_LINKS = [
   { label: "About",      href: "#about" },
@@ -24,44 +21,41 @@ export function Footer() {
   const ruleRef    = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      /* ── big heading ── */
-      const words = headingRef.current?.querySelectorAll(".foot-word") ?? [];
-      gsap.set(words, { yPercent: 110, opacity: 0 });
-      gsap.to(words, {
-        yPercent: 0,
-        opacity: 1,
-        stagger: 0.1,
-        duration: 1.2,
-        ease: "expo.out",
-        scrollTrigger: { trigger: headingRef.current, start: "top 95%" },
-      });
+    const footer = footerRef.current;
+    if (!footer) return;
 
-      /* ── email ── */
-      gsap.set(emailRef.current, { opacity: 0, yPercent: 20 });
-      gsap.to(emailRef.current, {
-        opacity: 1, yPercent: 0, duration: 0.9, ease: "power3.out",
-        scrollTrigger: { trigger: emailRef.current, start: "top 98%" },
-      });
+    // Set initial hidden state immediately
+    const words = headingRef.current?.querySelectorAll(".foot-word") ?? [];
+    const items = footer.querySelectorAll(".foot-item") ?? [];
+    gsap.set(words,            { yPercent: 110, opacity: 0 });
+    gsap.set(emailRef.current, { opacity: 0, yPercent: 20 });
+    gsap.set(ruleRef.current,  { scaleX: 0, transformOrigin: "left center" });
+    gsap.set(items,            { opacity: 0, yPercent: 16 });
 
-      /* ── rule sweep ── */
-      gsap.set(ruleRef.current, { scaleX: 0, transformOrigin: "left center" });
-      gsap.to(ruleRef.current, {
-        scaleX: 1, duration: 1, ease: "power4.inOut",
-        scrollTrigger: { trigger: ruleRef.current, start: "top 100%" },
-      });
+    // Animate in when footer enters viewport — works on every navigation
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect(); // run once per mount
 
-      /* ── bottom items ── */
-      const items = footerRef.current?.querySelectorAll(".foot-item") ?? [];
-      gsap.set(items, { opacity: 0, yPercent: 16 });
-      gsap.to(items, {
-        opacity: 1, yPercent: 0,
-        stagger: 0.08, duration: 0.7, ease: "power3.out",
-        scrollTrigger: { trigger: ruleRef.current, start: "top 100%" },
-      });
-    });
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-    return () => ctx.revert();
+        tl.to(words, {
+          yPercent: 0, opacity: 1,
+          stagger: 0.1, duration: 1.1, ease: "expo.out",
+        });
+        tl.to(emailRef.current,
+          { opacity: 1, yPercent: 0, duration: 0.8 }, "-=0.6");
+        tl.to(ruleRef.current,
+          { scaleX: 1, duration: 0.8, ease: "power4.inOut" }, "-=0.4");
+        tl.to(items,
+          { opacity: 1, yPercent: 0, stagger: 0.06, duration: 0.6 }, "-=0.5");
+      },
+      { threshold: 0.05 } // fire as soon as 5% of footer is visible
+    );
+
+    observer.observe(footer);
+    return () => observer.disconnect();
   }, []);
 
   const headingWords = ["Let's", "Work", "Together"];

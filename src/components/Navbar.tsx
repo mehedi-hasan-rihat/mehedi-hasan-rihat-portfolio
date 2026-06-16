@@ -22,10 +22,12 @@ export function Navbar({ }: NavbarProps) {
   const isResume = pathname === "/resume";
 
   useEffect(() => {
-    // Entrance animation
+    const alreadyLoaded = sessionStorage.getItem("siteLoaded") === "1";
+    const delay = alreadyLoaded ? 0.05 : 5.5;
+
     const tl = gsap.timeline({
       defaults: { ease: "expo.out", duration: 1.4 },
-      delay: 5.5,
+      delay,
     });
 
     gsap.set(logoRef.current, { xPercent: -50, clipPath: "inset(0 100% 0 0)" });

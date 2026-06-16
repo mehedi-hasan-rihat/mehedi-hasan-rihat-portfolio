@@ -33,9 +33,9 @@ export const site = {
   resumePageHref: "/resume",
   resumePdfHref: null as string | null,
   socials: [
-    { label: "GitHub", href: "https://github.com/your-username", icon: "github" },
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/your-handle/", icon: "linkedin" },
-    { label: "X", href: "https://x.com/your-handle", icon: "x" },
+    { label: "GitHub", href: "https://github.com/mehedi-hasan-rihat", icon: "github" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/mehedi-hasan-rihat/", icon: "linkedin" },
+    { label: "Medium", href: "https://medium.com/@mehedidevlog", icon: "Medium" },
   ],
   skills: [
     // Frontend
@@ -43,8 +43,7 @@ export const site = {
     { name: "Next.js",        category: "Frontend" },
     { name: "Tailwind CSS",   category: "Frontend" },
     { name: "HTML & CSS",     category: "Frontend" },
-    { name: "Framer Motion",  category: "Frontend" },
-    { name: "GSAP",           category: "Frontend" },
+
     // Language
     { name: "TypeScript",     category: "Language" },
     { name: "JavaScript",     category: "Language" },
@@ -52,18 +51,15 @@ export const site = {
     // Backend
     { name: "Node.js",        category: "Backend" },
     { name: "Express",        category: "Backend" },
-    { name: "REST APIs",      category: "Backend" },
-    // Database
-    { name: "MongoDB",        category: "Database" },
-    { name: "MySQL",          category: "Database" },
-    { name: "PostgreSQL",     category: "Database" },
-    { name: "Prisma",         category: "Database" },
+    { name: "MongoDB",        category: "Backend" },
+    { name: "MySQL",          category: "Backend" },
+    { name: "PostgreSQL",     category: "Backend" },
+    { name: "Prisma",         category: "Backend" },
     // Tooling
     { name: "Git & GitHub",   category: "Tooling" },
     { name: "Docker",         category: "Tooling" },
     { name: "Playwright",     category: "Tooling" },
     { name: "Storybook",      category: "Tooling" },
-    { name: "Vite",           category: "Tooling" },
   ],
   projects: [
     {
@@ -121,24 +117,24 @@ export const site = {
   ],
   blogs: [
     {
-      title: "My First Real Project: What I Learned Building a Full-Stack App",
+      title: "Why React Context and State Stores Behave Differently When Rendering Components",
       category: "Software Dev",
-      readTime: "4 min read",
-      date: "Feb 4, 2026",
+      readTime: "3 min read",
+      date: "June 5, 2026",
       excerpt:
-        "The bugs, the late nights, and the moments it finally clicked. What building a real project taught me as a beginner developer.",
-      tags: ["#Beginner", "#FullStack", "#React"],
-      href: "#",
+        "If you’ve spent time in React, you’ve probably noticed a recurring claim: Context causes unnecessary re-renders, while libraries like Redux, Zustand, Jotai, or MobX feel more optimized.",
+      tags: ["#Frontend", "#Next.js", "#React"],
+      href: "https://mehedidevlog.medium.com/why-react-context-and-state-stores-behave-differently-when-rendering-components-78ba283d1ad7",
     },
     {
-      title: "Getting Started with Prisma and PostgreSQL",
-      category: "Backend",
+      title: "Understanding SSR, CSR, Server Components, and Client Components in Next.js (The Right Way)",
+      category: "Frontend",
       readTime: "6 min read",
       date: "Jan 16, 2026",
       excerpt:
-        "A beginner-friendly walkthrough of setting up Prisma with Postgres. Schemas, migrations, and simple queries explained.",
-      tags: ["#Prisma", "#PostgreSQL", "#Backend"],
-      href: "#",
+        "Modern Next.js has fundamentally changed how we build React applications. If you learned React through traditional single-page apps (SPAs), concepts like Server Components, hydration, “use client”, and the mix of SSR and CSR can feel confusing and overlapping.",
+              tags: ["#Nextjs", "#Rendering", "#Frontend"],
+      href: "https://mehedidevlog.medium.com/understanding-ssr-csr-server-components-and-client-components-in-next-js-the-right-way-6a2342afd6ab",
     },
   ],
   stats: {

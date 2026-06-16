@@ -22,6 +22,11 @@ export function Hero() {
     const ctx = gsap.context(() => {
       const nameWords = nameRef.current?.querySelectorAll(".hero-word") ?? [];
 
+      // If the page loader already ran in this session, animate immediately
+      const alreadyLoaded = typeof sessionStorage !== "undefined"
+        && sessionStorage.getItem("siteLoaded") === "1";
+      const delay = alreadyLoaded ? 0.1 : 5.5;
+
       /* ── initial states ── */
       gsap.set(watermarkRef.current, { opacity: 0 });
       gsap.set(badgeRef.current,     { opacity: 0, yPercent: 20 });
@@ -36,7 +41,7 @@ export function Hero() {
       gsap.set(scrollRef.current,    { opacity: 0, yPercent: 20 });
 
       /* ── master timeline ── */
-      const tl = gsap.timeline({ delay: 5.5, defaults: { ease: "expo.out" } });
+      const tl = gsap.timeline({ delay, defaults: { ease: "expo.out" } });
 
       // watermark ghosts in
       tl.to(watermarkRef.current, { opacity: 1, duration: 1.4, ease: "power2.out" });

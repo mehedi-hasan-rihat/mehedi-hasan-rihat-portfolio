@@ -149,7 +149,7 @@ export default function ResumePage() {
           </div>
         </div>
 
-        {/* Projects */}
+        {/* Projects
         <div className="resume-section mb-16">
           <h2 className="text-xs text-zinc-500 uppercase tracking-[0.2em] font-mono mb-8">
             Selected Projects
@@ -184,7 +184,7 @@ export default function ResumePage() {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Download */}
         <div className="resume-section pt-8 border-t border-zinc-800">
