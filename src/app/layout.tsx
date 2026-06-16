@@ -3,6 +3,7 @@ import "./globals.css";
 import { FancyCursor } from "@/components/FancyCursor";
 import { ShaderBackground } from "@/components/ShaderBackground";
 import { SmoothScroll } from "@/components/SmoothScroll";
+import { PageLoader } from "@/components/PageLoader";
 
 export const metadata: Metadata = {
   title: "Mehedi Hasan Rihat | Software Developer",
@@ -35,6 +36,7 @@ export default function RootLayout({
         <style dangerouslySetInnerHTML={{ __html: `html,body{background:#0a0a0a;color:#fafafa}` }} />
       </head>
       <body className="bg-[#0a0a0a] text-zinc-50 antialiased grain">
+        <PageLoader />
         <ShaderBackground />
         <SmoothScroll>
           {children}

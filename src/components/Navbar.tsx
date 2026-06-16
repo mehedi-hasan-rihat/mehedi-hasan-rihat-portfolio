@@ -25,7 +25,7 @@ export function Navbar({ }: NavbarProps) {
     // Entrance animation
     const tl = gsap.timeline({
       defaults: { ease: "expo.out", duration: 1.4 },
-      delay: 1.5,
+      delay: 4.5,
     });
 
     gsap.set(logoRef.current, { xPercent: -50, clipPath: "inset(0 100% 0 0)" });

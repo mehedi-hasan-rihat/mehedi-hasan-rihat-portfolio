@@ -20,7 +20,7 @@ export function Hero() {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         defaults: { ease: "expo.out" },
-        delay: 0.5,
+        delay: 4.5,
       });
 
       // Availability badge
