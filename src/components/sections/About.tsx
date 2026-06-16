@@ -91,27 +91,53 @@ export function About() {
             </div>
           </div>
 
-          {/* Right — Profile Image */}
+          {/* Right — Profile Image (Hero card style) */}
           <div className="lg:col-span-5 flex items-center">
-            <div ref={imageRef} className="relative w-full aspect-4/5 bg-zinc-900 overflow-hidden group">
+            <div
+              ref={imageRef}
+              className="relative w-full aspect-4/5 overflow-hidden group"
+              style={{ borderRadius: "4px" }}
+            >
               <Image
-                src={site.avatar_about}
+                src={site.avatar}
                 alt={site.name}
                 fill
-                className="object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
+                className="object-cover object-top scale-105 group-hover:scale-100 transition-transform duration-1000 ease-out"
               />
-              {/* Bottom gradient — ensures text is always readable */}
-              <div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a] via-[#0a0a0a]/30 to-transparent" />
+
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a] via-[#0a0a0a]/10 to-transparent opacity-70" />
+
               {/* Border frame */}
               <div className="absolute inset-0 border border-zinc-700/50 group-hover:border-zinc-500/70 transition-colors duration-700" />
-              {/* Corner accent */}
-              <div className="absolute bottom-5 left-5 right-5 flex justify-between items-end">
-                <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-mono">
-                  {site.location}
-                </span>
-                <span className="text-[10px] text-zinc-500 font-mono">
-                  {site.initials}
-                </span>
+
+              {/* Bottom label */}
+              <div className="absolute bottom-0 left-0 right-0 p-5 border-t border-zinc-800/60">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-[10px] text-zinc-400 uppercase tracking-[0.2em] font-mono leading-none mb-1">
+                      {site.role}
+                    </div>
+                    <div className="text-[10px] text-zinc-600 uppercase tracking-[0.15em] font-mono leading-none">
+                      {site.location}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-[9px] text-zinc-500 uppercase tracking-wider font-mono">
+                      Available
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Top-right corner bracket */}
+              <div className="absolute top-4 right-4">
+                <div className="w-6 h-6 border-t border-r border-zinc-600" />
+              </div>
+              {/* Bottom-left corner bracket */}
+              <div className="absolute bottom-16 left-4">
+                <div className="w-6 h-6 border-b border-l border-zinc-600" />
               </div>
             </div>
           </div>
