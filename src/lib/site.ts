@@ -11,11 +11,11 @@ export function getDuration(startDate: string): string {
   const startStr = start.toLocaleDateString("en-US", { month: "short", year: "numeric" });
 
   if (years < 1) {
-    return `${startStr} — Present · ${months} month${months !== 1 ? "s" : ""}`;
+    return `${startStr} to Present (${months} month${months !== 1 ? "s" : ""})`;
   }
 
-  const rounded = Math.round(years * 2) / 2; // round to nearest 0.5
-  return `${startStr} — Present · ~${rounded} year${rounded !== 1 ? "s" : ""}`;
+  const rounded = Math.round(years * 2) / 2;
+  return `${startStr} to Present (~${rounded} year${rounded !== 1 ? "s" : ""})`;
 }
 
 export const site = {
@@ -23,8 +23,8 @@ export const site = {
   initials: "MHR",
   role: "Software Developer",
   tagline:
-    "Crafting high-performance web experiences with React, Next.js & the modern stack.",
-  bio: "I design and build production-grade web applications that are fast, accessible, and built to scale. My approach combines clean architecture with thoughtful UI — shipping products that users love and teams can maintain.",
+    "Building reliable software. Web apps, APIs, clean code and a passion for learning.",
+  bio: "I'm a software developer who enjoys building things end-to-end. From UI to backend, I like writing clean readable code and solving real problems. Always learning, always improving.",
   location: "Dhaka, Bangladesh",
   email: "mehedi@example.com",
   availability: "Open to opportunities",
@@ -43,11 +43,10 @@ export const site = {
     { name: "Node.js", category: "Backend" },
     { name: "Express", category: "Backend" },
     { name: "MongoDB", category: "Database" },
+    { name: "MySql", category: "Database" },
     { name: "PostgreSQL", category: "Database" },
     { name: "Prisma", category: "ORM" },
     { name: "Tailwind CSS", category: "Styling" },
-    { name: "REST APIs", category: "Architecture" },
-    { name: "Git/GitHub", category: "Tooling" },
     { name: "Docker", category: "DevOps" },
   ],
   projects: [
@@ -55,7 +54,7 @@ export const site = {
       title: "SaaS Dashboard",
       type: "Full‑Stack",
       description:
-        "Multi-tenant analytics dashboard with role-based auth, billing integration, and a modular component system built for scale.",
+        "A dashboard app with user auth, data tables, and basic analytics. Built to practice full-stack skills with Next.js and PostgreSQL.",
       stack: ["Next.js", "PostgreSQL", "Prisma", "Tailwind"],
       href: "#",
       imageSrc: "/assets/project-dashboard.svg",
@@ -65,7 +64,7 @@ export const site = {
       title: "E‑Commerce Storefront",
       type: "Web App",
       description:
-        "Lightning-fast product browsing with optimistic UI, instant search, and a streamlined checkout flow focused on conversion.",
+        "A simple online store with product listings, a cart, and a checkout page. Integrated with Stripe to handle payments.",
       stack: ["React", "Node.js", "MongoDB", "Stripe"],
       href: "#",
       imageSrc: "/assets/project-store.svg",
@@ -75,7 +74,7 @@ export const site = {
       title: "Portfolio System",
       type: "Design + Dev",
       description:
-        "A modular, animated portfolio template with MDX blog support, project showcases, and activity feeds — fully customizable.",
+        "My personal portfolio built from scratch with smooth animations and a blog section. A fun project to practice GSAP and Next.js.",
       stack: ["Next.js", "GSAP", "Three.js", "MDX"],
       href: "#",
       imageSrc: "/assets/project-portfolio.svg",
@@ -85,51 +84,51 @@ export const site = {
   experience: [
     {
       company: "Nexbell Inc.",
-      product: "Sellzzy — E-commerce Builder Platform",
+      product: "Sellzzy - E-commerce Builder Platform",
       role: "Frontend Developer",
       location: "Remote",
       startDate: "2025-03",
       duration: null, // computed dynamically
       bullets: [
-        "Built core modules including Order Management, Customer Management, Courier Management, and Store Dashboard — directly impacting merchant workflow efficiency.",
-        "Improved frontend performance using Next.js (SSR, SSG, ISR), achieving faster page loads and SEO-friendly storefront rendering.",
-        "Implemented automated end-to-end testing with Playwright, improving stability and reducing production bugs in critical user flows.",
-        "Set up Storybook for component documentation, enabling consistent UI development and streamlined design-engineering collaboration.",
-        "Designed and implemented responsive, reusable UI components with React and Next.js, improving design consistency across the entire platform.",
-        "Applied caching strategies and optimized data-fetching flows, reducing unnecessary re-renders and improving page speed metrics.",
-        "Integrated REST APIs for dynamic data handling across both storefront and admin dashboard systems.",
-        "Collaborated with product and backend teams to translate complex SaaS requirements into scalable, maintainable frontend solutions.",
-        "Contributed to frontend architecture improvements, enhancing codebase maintainability and long-term scalability.",
+        "Helped build core modules including Order Management, Customer Management, Courier Management, and Store Dashboard.",
+        "Worked with Next.js features like SSR and SSG to improve page load speed and SEO.",
+        "Wrote end-to-end tests with Playwright to catch bugs in key user flows before they hit production.",
+        "Used Storybook to document UI components and keep the design consistent across the platform.",
+        "Built responsive, reusable UI components with React and Tailwind CSS.",
+        "Worked on caching and data-fetching to reduce unnecessary re-renders.",
+        "Connected REST APIs to display dynamic data in both the storefront and admin dashboard.",
+        "Collaborated with product and backend teammates to understand requirements and turn them into working features.",
+        "Made small improvements to the frontend codebase to keep things organized and easier to maintain.",
       ],
       tools: ["React", "Next.js", "TypeScript", "Tailwind CSS", "REST APIs", "SSR/SSG/ISR", "Playwright", "Storybook"],
     },
   ],
   blogs: [
     {
-      title: "From Idea to MVP: Shipping Without Overthinking",
-      category: "Product & Engineering",
+      title: "My First Real Project: What I Learned Building a Full-Stack App",
+      category: "Software Dev",
       readTime: "4 min read",
       date: "Feb 4, 2026",
       excerpt:
-        "What late nights, small bugs, and unfinished ideas taught me about building real projects.",
-      tags: ["#MVP", "#Frontend", "#Iteration"],
+        "The bugs, the late nights, and the moments it finally clicked. What building a real project taught me as a beginner developer.",
+      tags: ["#Beginner", "#FullStack", "#React"],
       href: "#",
     },
     {
-      title: "Prisma + Postgres: The Clean Way to Model Data",
+      title: "Getting Started with Prisma and PostgreSQL",
       category: "Backend",
       readTime: "6 min read",
       date: "Jan 16, 2026",
       excerpt:
-        "A practical approach to schema design, migrations, and query patterns that scale.",
-      tags: ["#Prisma", "#PostgreSQL", "#SystemDesign"],
+        "A beginner-friendly walkthrough of setting up Prisma with Postgres. Schemas, migrations, and simple queries explained.",
+      tags: ["#Prisma", "#PostgreSQL", "#Backend"],
       href: "#",
     },
   ],
   stats: {
-    projects: "10+",
-    experience: "1.5+",
-    clients: "15+",
-    commits: "1.2K+",
+    projects: "5+",
+    experience: "1+",
+    clients: "3+",
+    commits: "300+",
   },
 } as const;

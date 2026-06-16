@@ -5,9 +5,9 @@ import { ShaderBackground } from "@/components/ShaderBackground";
 import { SmoothScroll } from "@/components/SmoothScroll";
 
 export const metadata: Metadata = {
-  title: "Mehedi Hasan Rihat — Software Developer",
+  title: "Mehedi Hasan Rihat | Software Developer",
   description:
-    "Portfolio of Mehedi Hasan Rihat — crafting high-performance web experiences with React, Next.js & the modern stack.",
+    "Portfolio of Mehedi Hasan Rihat. A software developer building web apps with React and Next.js.",
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },

@@ -74,7 +74,7 @@ export function Footer() {
             © {new Date().getFullYear()} {site.name}
           </div>
           <div className="text-zinc-700 text-xs font-mono">
-            Designed & Built with precision
+            Designed & Built by me
           </div>
         </div>
       </div>

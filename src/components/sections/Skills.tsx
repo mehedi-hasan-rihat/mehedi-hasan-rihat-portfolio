@@ -67,7 +67,7 @@ export function Skills() {
               </h2>
             </div>
             <p className="text-base text-zinc-500 leading-relaxed max-w-md">
-              Technologies I use daily to build performant, scalable applications — from concept to deployment.
+              Technologies I&apos;ve been learning and using to build software. From web UIs to backends and databases.
             </p>
           </div>
 

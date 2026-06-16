@@ -70,7 +70,7 @@ export function Connect() {
               </div>
               <div className="overflow-hidden">
                 <h2 className="connect-word text-5xl md:text-7xl lg:text-[6rem] font-black uppercase tracking-tighter text-white leading-[0.9]">
-                  great.
+                  real.
                 </h2>
               </div>
             </div>

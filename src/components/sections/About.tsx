@@ -11,7 +11,6 @@ export function About() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const bioRef = useRef<HTMLDivElement>(null);
-  const statsRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -35,19 +34,6 @@ export function About() {
         duration: 1.2,
         ease: "power3.out",
         scrollTrigger: { trigger: bioRef.current, start: "top 75%" },
-      });
-
-      // Stats reveal with counter-like feel
-      const statItems = statsRef.current?.querySelectorAll(".stat-card") || [];
-      gsap.set(statItems, { yPercent: 60, scale: 0.95, rotateX: -10 });
-      gsap.to(statItems, {
-        yPercent: 0,
-        scale: 1,
-        rotateX: 0,
-        stagger: 0.12,
-        duration: 1,
-        ease: "expo.out",
-        scrollTrigger: { trigger: statsRef.current, start: "top 80%" },
       });
 
       // Image reveal with diagonal clip
@@ -87,9 +73,9 @@ export function About() {
                 ref={headingRef}
                 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter text-white leading-[0.9]"
               >
-                Building the
+                Building
                 <br />
-                <span className="text-zinc-500">modern web</span>
+                <span className="text-zinc-500">software</span>
               </h2>
             </div>
 
@@ -98,8 +84,8 @@ export function About() {
                 {site.bio}
               </p>
               <p className="bio-line text-base text-zinc-500 leading-relaxed">
-                Based in <span className="text-zinc-300">{site.location}</span> — available for
-                freelance, contract, and full-time roles worldwide.
+                Based in <span className="text-zinc-300">{site.location}</span>. Open to
+                junior roles, internships, and freelance opportunities.
               </p>
             </div>
           </div>
@@ -129,26 +115,7 @@ export function About() {
           </div>
         </div>
 
-        {/* Stats */}
-        <div
-          ref={statsRef}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-24"
-          style={{ perspective: "800px" }}
-        >
-          {Object.entries(site.stats).map(([key, value]) => (
-            <div
-              key={key}
-              className="stat-card p-8 border border-zinc-800/60 bg-zinc-900/30 backdrop-blur-sm hover:border-zinc-600 transition-colors duration-500 group"
-            >
-              <div className="text-4xl md:text-5xl font-black text-white mb-3 group-hover:scale-105 transition-transform duration-500 origin-left">
-                {value}
-              </div>
-              <div className="text-xs text-zinc-500 uppercase tracking-wider font-medium">
-                {key}
-              </div>
-            </div>
-          ))}
-        </div>
+
       </div>
     </section>
   );
