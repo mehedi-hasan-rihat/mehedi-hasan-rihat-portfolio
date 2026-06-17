@@ -188,7 +188,8 @@ export function Hero() {
           </a>
           <a
             href={site.resumePdfHref ?? "/resume"}
-            download={!!site.resumePdfHref}
+            target="_blank"
+            rel="noopener noreferrer"
             className="group inline-flex items-center gap-3 px-7 py-3.5 border border-zinc-700 text-zinc-300 text-sm font-semibold uppercase tracking-wider hover:border-zinc-400 hover:text-white transition-all duration-300"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

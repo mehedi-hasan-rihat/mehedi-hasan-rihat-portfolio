@@ -31,7 +31,7 @@ export const site = {
   avatar: "/assets/mehedi.jpeg",
   avatar_about: "/assets/mehedi_afa.jpeg",
   resumePageHref: "/resume",
-  resumePdfHref: null as string | null,
+  resumePdfHref: "https://drive.google.com/file/d/1o5qdPGBWM9BEk_jL8tpCS1wL7A0TDpey/view?usp=sharing" as string | null,
   socials: [
     { label: "GitHub", href: "https://github.com/mehedi-hasan-rihat", icon: "github" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/mehedi-hasan-rihat/", icon: "linkedin" },
