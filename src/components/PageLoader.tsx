@@ -73,6 +73,7 @@ export function PageLoader({ onComplete }: { onComplete?: () => void }) {
       tl.to(bottomPanelRef.current, {
         yPercent: 100, duration: 0.85, ease: "power4.inOut",
         onComplete: () => {
+          sessionStorage.setItem("siteLoaded", "1");
           setDone(true);
           onComplete?.();
         },

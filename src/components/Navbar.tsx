@@ -3,11 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LogoAnimated } from "./Logo";
 import Link from "next/link";
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface NavbarProps {
   name: string;
@@ -21,23 +18,34 @@ export function Navbar({ }: NavbarProps) {
   const pathname = usePathname();
   const isResume = pathname === "/resume";
 
+  const hasAnimated = useRef(false);
+
+  // Entrance animation — runs once only
   useEffect(() => {
+    if (hasAnimated.current) return;
+    hasAnimated.current = true;
+
     const alreadyLoaded = sessionStorage.getItem("siteLoaded") === "1";
     const delay = alreadyLoaded ? 0.05 : 5.5;
 
-    const tl = gsap.timeline({
-      defaults: { ease: "expo.out", duration: 1.4 },
-      delay,
-    });
-
     gsap.set(logoRef.current, { xPercent: -50, clipPath: "inset(0 100% 0 0)" });
-    tl.to(logoRef.current, { xPercent: 0, clipPath: "inset(0 0% 0 0)" });
-
     const links = linksRef.current?.querySelectorAll(".nav-link") || [];
     gsap.set(links, { yPercent: 100 });
-    tl.to(links, { yPercent: 0, stagger: 0.08, duration: 0.8 }, "-=0.8");
 
-    // Scroll-based background
+    const tl = gsap.timeline({ defaults: { ease: "expo.out", duration: 1.4 }, delay });
+    tl.to(logoRef.current, { xPercent: 0, clipPath: "inset(0 0% 0 0)" });
+    tl.to(links, { yPercent: 0, stagger: 0.08, duration: 0.8 }, "-=0.8");
+  }, []);
+
+  // When route changes, ensure all nav-links are visible immediately (no re-animation)
+  useEffect(() => {
+    if (!hasAnimated.current) return;
+    const links = linksRef.current?.querySelectorAll(".nav-link") || [];
+    gsap.set(links, { yPercent: 0, clearProps: "all" });
+  }, [pathname]);
+
+  // Scroll background
+  useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 100);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
